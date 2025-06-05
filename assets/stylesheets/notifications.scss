@@ -24,7 +24,32 @@
 :root.discourse-dark,
 html[data-theme="dark"],
 body.dark-theme,
-.dark {
+.dark,
+.d-dark-mode,
+html[class*="color-scheme-dark"] {
+  --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%) !important;
+  --note-border-color: #6c757d !important;
+  --note-text-color: #b0b0b0 !important;
+  --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%) !important;
+  --info-border-color: #2196f3 !important;
+  --info-text-color: #90caf9 !important;
+  --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%) !important;
+  --warn-border-color: #ff9800 !important;
+  --warn-text-color: #ffcc02 !important;
+  --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%) !important;
+  --negative-border-color: #f44336 !important;
+  --negative-text-color: #ff8a80 !important;
+  --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%) !important;
+  --positive-border-color: #4caf50 !important;
+  --positive-text-color: #a5d6a7 !important;
+  --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%) !important;
+  --caution-border-color: #e91e63 !important;
+  --caution-text-color: #f48fb1 !important;
+}
+
+// Additional selector for greater specificity in dark themes
+.d-dark-mode .p-notification,
+html[data-theme="dark"] .p-notification {
   --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%) !important;
   --note-border-color: #6c757d !important;
   --note-text-color: #b0b0b0 !important;
