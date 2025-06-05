@@ -20,11 +20,18 @@ export function setup(helper) {
   helper.registerPlugin(md => {
     // Define all supported note types
     const noteTypes = ['note', 'info', 'warn', 'negative', 'positive', 'caution'];
+      // Get site settings for display options
+    let siteSettings = {};
+    let showTitles = true;
+    let showIcons = true;
     
-    // Get site settings for display options
-    const siteSettings = helper.getOption('siteSettings') || {};
-    const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
-    const showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
+    try {
+      siteSettings = helper.getOption('siteSettings') || {};
+      showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
+      showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
+    } catch (settingsError) {
+      console.warn('[Markdown Notes] Could not get site settings, using defaults:', settingsError);
+    }
     
     // Register each note type as a separate tag
     noteTypes.forEach(noteType => {
@@ -68,21 +75,25 @@ export function setup(helper) {
             };
             state.push('text', '', 0).content = statusText[noteType] + ': ';
             state.push('span_close', 'span', -1);
+          }          // Add the [note] content
+          try {
+            const tokens = state.md.parse(content, state.env);
+            tokens.forEach(element => {
+              // For some reason, "inline" elements contain their text twice,
+              // which duplicates the text on the page.
+              // This is because the text appears both inside the "content" of the inline block,
+              // and in a "text" child node of the block.
+              // We therefore strip the "content", so the text only appears once.
+              if (element.type == "inline") {
+                element.content = ""
+              }
+              state.tokens.push(element)
+            });
+          } catch (parseError) {
+            console.error('[Markdown Notes] Error parsing note content:', parseError);
+            // Fallback: add content as simple text
+            state.push('text', '', 0).content = content;
           }
-
-          // Add the [note] content
-          const tokens = state.md.parse(content, state.md);
-          tokens.forEach(element => {
-            // For some reason, "inline" elements contain their text twice,
-            // which duplicates the text on the page.
-            // This is because the text appears both inside the "content" of the inline block,
-            // and in a "text" child node of the block.
-            // We therefore strip the "content", so the text only appears once.
-            if (element.type == "inline") {
-              element.content = ""
-            }
-            state.tokens.push(element)
-          });
             // Close the wrapper elements
           state.push('div_close', 'div', -1);
           state.push('div_close', 'div', -1);
@@ -138,16 +149,20 @@ export function setup(helper) {
           };
           state.push('text', '', 0).content = (statusText[mappedType] || 'Заметка') + ': ';
           state.push('span_close', 'span', -1);
+        }        // Add the note content
+        try {
+          const tokens = state.md.parse(content, state.env);
+          tokens.forEach(element => {
+            if (element.type == "inline") {
+              element.content = ""
+            }
+            state.tokens.push(element)
+          });
+        } catch (parseError) {
+          console.error('[Markdown Notes] Error parsing legacy note content:', parseError);
+          // Fallback: add content as simple text
+          state.push('text', '', 0).content = content;
         }
-
-        // Add the note content
-        const tokens = state.md.parse(content, state.md);
-        tokens.forEach(element => {
-          if (element.type == "inline") {
-            element.content = ""
-          }
-          state.tokens.push(element)
-        });
         
         // Close the wrapper elements
         state.push('div_close', 'div', -1);

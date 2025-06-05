@@ -1,10 +1,19 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-function initializeNoteThemeSettings(api) {
+function initializeNoteThemeSettings(api) {  // Helper function to safely get site settings
+  function getSiteSettings() {
+    try {
+      return api.container.lookup("site-settings:main");
+    } catch (e) {
+      console.warn('[Markdown Notes] Could not get site settings:', e);
+      return {};
+    }
+  }
+
   // Improved theme detection based on user setting
   function getThemeMode() {
     try {
-      const siteSettings = api.container.lookup("site-settings:main");
+      const siteSettings = getSiteSettings();
       const themeMode = siteSettings.discourse_markdown_note_theme_mode || 'auto';
       
       if (themeMode === 'light') return 'light';
@@ -62,11 +71,10 @@ function initializeNoteThemeSettings(api) {
     
     // Default to light theme
     return false;
-  }
-  // Helper function to set CSS variables
+  }  // Helper function to set CSS variables
   function setCSSVar(type, lightBgSetting, darkBgSetting, borderSetting) {
     try {
-      const siteSettings = api.container.lookup("site-settings:main");
+      const siteSettings = getSiteSettings();
       const theme = getThemeMode();
       
       // Get background colors
@@ -100,11 +108,10 @@ function initializeNoteThemeSettings(api) {
     } catch (e) {
       console.error(`[Markdown Notes] Error setting CSS vars for ${type}:`, e);
     }
-  }
-  // Apply theme-based settings to CSS variables and display options
+  }  // Apply theme-based settings to CSS variables and display options
   function applyNoteStyles() {
     try {
-      const siteSettings = api.container.lookup("site-settings:main");
+      const siteSettings = getSiteSettings();
       const theme = getThemeMode();
       
       // Keep track of current theme with a data attribute
@@ -132,8 +139,19 @@ function initializeNoteThemeSettings(api) {
   }  
   // Apply styles on initialization
   applyNoteStyles();
-
   // Enhanced event handling for theme changes
+  let styleUpdateTimeout = null;
+  
+  function scheduleStyleUpdate() {
+    if (styleUpdateTimeout) {
+      clearTimeout(styleUpdateTimeout);
+    }
+    styleUpdateTimeout = setTimeout(() => {
+      applyNoteStyles();
+      styleUpdateTimeout = null;
+    }, 100);
+  }
+
   const observer = new MutationObserver(function(mutations) {
     let shouldApplyStyles = false;
     
@@ -152,12 +170,7 @@ function initializeNoteThemeSettings(api) {
     
     if (shouldApplyStyles) {
       console.log('[Markdown Notes] Theme change detected via MutationObserver');
-      // Apply with delays to handle race conditions
-      [50, 200, 500].forEach(delay => {
-        setTimeout(() => {
-          applyNoteStyles();
-        }, delay);
-      });
+      scheduleStyleUpdate();
     }
   });
 
@@ -171,10 +184,9 @@ function initializeNoteThemeSettings(api) {
     attributes: true,
     attributeFilter: ['class']
   });
-
   // Listen for Discourse-specific theme events
   api.onPageChange(() => {
-    setTimeout(applyNoteStyles, 100);
+    scheduleStyleUpdate();
   });
   
   // Listen for system color scheme changes
@@ -182,13 +194,13 @@ function initializeNoteThemeSettings(api) {
   try {
     colorSchemeMedia.addEventListener('change', () => {
       console.log('[Markdown Notes] System color scheme changed');
-      setTimeout(applyNoteStyles, 100);
+      scheduleStyleUpdate();
     });
   } catch (e) {
     // Fallback for older browsers
     colorSchemeMedia.addListener(() => {
       console.log('[Markdown Notes] System color scheme changed (fallback)');
-      setTimeout(applyNoteStyles, 100);
+      scheduleStyleUpdate();
     });
   }
   
@@ -196,24 +208,24 @@ function initializeNoteThemeSettings(api) {
   if (api.onAppEvent) {
     api.onAppEvent('theme:changed', () => {
       console.log('[Markdown Notes] Discourse theme changed event');
-      setTimeout(applyNoteStyles, 100);
+      scheduleStyleUpdate();
     });
     
     api.onAppEvent('discourse-theme:changed', () => {
       console.log('[Markdown Notes] Discourse theme changed event (legacy)');
-      setTimeout(applyNoteStyles, 100);
+      scheduleStyleUpdate();
     });
   }
   
   // Apply styles when window gains focus (for external theme changes)
   window.addEventListener('focus', () => {
-    setTimeout(applyNoteStyles, 200);
+    scheduleStyleUpdate();
   });
   
   // Apply styles when DOM is fully loaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(applyNoteStyles, 300);
+      scheduleStyleUpdate();
     });
   }
 }
