@@ -3,7 +3,7 @@
 en:
   js:
     note:
-      composer_title: "Insert Note"
+      composer_title: "Notes"
       note_title: "Note"
       info_title: "Information"
       warn_title: "Warning"

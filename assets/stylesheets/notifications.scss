@@ -4,6 +4,12 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  
+  // Dark theme support
+  .dark-mode &,
+  body.dark-scheme & {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .p-notification__response {
@@ -11,6 +17,7 @@
   position: relative;
   margin: 0;
   border: none;
+  color: var(--primary);
 }
 
 // Icon styling
@@ -53,6 +60,22 @@
   .p-notification__status {
     color: #495057;
   }
+  
+  // Dark theme
+  .dark-mode &,
+  body.dark-scheme & {
+    background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+    border-left-color: #8a8a8a;
+    
+    .p-notification__response {
+      background: rgba(44, 44, 44, 0.7);
+      color: #e0e0e0;
+    }
+    
+    .p-notification__status {
+      color: #b0b0b0;
+    }
+  }
 }
 
 .p-notification--info {
@@ -72,6 +95,22 @@
   
   .p-notification__status {
     color: #1565c0;
+  }
+  
+  // Dark theme
+  .dark-mode &,
+  body.dark-scheme & {
+    background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+    border-left-color: #42a5f5;
+    
+    .p-notification__response {
+      background: rgba(26, 35, 50, 0.7);
+      color: #e3f2fd;
+    }
+    
+    .p-notification__status {
+      color: #90caf9;
+    }
   }
 }
 
@@ -93,6 +132,22 @@
   .p-notification__status {
     color: #e65100;
   }
+  
+  // Dark theme
+  .dark-mode &,
+  body.dark-scheme & {
+    background: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
+    border-left-color: #ffb74d;
+    
+    .p-notification__response {
+      background: rgba(51, 43, 26, 0.7);
+      color: #fff8e1;
+    }
+    
+    .p-notification__status {
+      color: #ffcc02;
+    }
+  }
 }
 
 .p-notification--negative {
@@ -112,6 +167,22 @@
   
   .p-notification__status {
     color: #c62828;
+  }
+  
+  // Dark theme
+  .dark-mode &,
+  body.dark-scheme & {
+    background: linear-gradient(135deg, #331a1a 0%, #472424 100%);
+    border-left-color: #ef5350;
+    
+    .p-notification__response {
+      background: rgba(51, 26, 26, 0.7);
+      color: #ffebee;
+    }
+    
+    .p-notification__status {
+      color: #ff8a80;
+    }
   }
 }
 
@@ -133,6 +204,22 @@
   .p-notification__status {
     color: #2e7d32;
   }
+  
+  // Dark theme
+  .dark-mode &,
+  body.dark-scheme & {
+    background: linear-gradient(135deg, #1a331a 0%, #244724 100%);
+    border-left-color: #66bb6a;
+    
+    .p-notification__response {
+      background: rgba(26, 51, 26, 0.7);
+      color: #e8f5e8;
+    }
+    
+    .p-notification__status {
+      color: #a5d6a7;
+    }
+  }
 }
 
 .p-notification--caution {
@@ -153,6 +240,22 @@
   .p-notification__status {
     color: #ad1457;
   }
+  
+  // Dark theme
+  .dark-mode &,
+  body.dark-scheme & {
+    background: linear-gradient(135deg, #331a26 0%, #472433 100%);
+    border-left-color: #ec407a;
+    
+    .p-notification__response {
+      background: rgba(51, 26, 38, 0.7);
+      color: #fce4ec;
+    }
+    
+    .p-notification__status {
+      color: #f48fb1;
+    }
+  }
 }
 
 // Legacy support for old class names
@@ -162,7 +265,13 @@
 
 // Editor button styles
 .note-types-dropdown {
+  background: var(--secondary);
+  border: 1px solid var(--primary-low);
+  box-shadow: var(--shadow-dropdown);
+  
   .note-type-button {
+    color: var(--primary);
+    
     &:hover {
       background-color: var(--primary-very-low) !important;
     }
@@ -171,6 +280,14 @@
       outline: 2px solid var(--tertiary);
       outline-offset: -2px;
     }
+  }
+  
+  // Dark theme
+  .dark-mode &,
+  body.dark-scheme & {
+    background: var(--secondary);
+    border-color: var(--primary-medium);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -181,10 +298,27 @@
     margin: 0 2px;
   }
   
-  button[data-id="note-dropdown"] {
+  button[data-id="insert-note"] {
     &.active {
       background-color: var(--primary-low);
       color: var(--primary);
+    }
+    
+    &:hover {
+      background-color: var(--primary-very-low);
+    }
+    
+    // Dark theme
+    .dark-mode &,
+    body.dark-scheme & {
+      &:hover {
+        background-color: var(--primary-low);
+      }
+      
+      &.active {
+        background-color: var(--primary-medium);
+        color: var(--secondary);
+      }
     }
   }
 }

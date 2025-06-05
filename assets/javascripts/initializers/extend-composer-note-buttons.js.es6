@@ -3,12 +3,14 @@ import { iconHTML } from "discourse-common/lib/icon-library";
 
 function initializeNoteButtons(api) {
   api.onToolbarCreate(toolbar => {
-    // Add note buttons group
+    // Add note button to the main toolbar
     toolbar.addButton({
-      id: "note-dropdown",
-      group: "extras",
+      id: "insert-note",
+      group: "fontStyles", // Put it with other formatting buttons
       icon: "sticky-note",
       title: "note.composer_title",
+      label: "note.composer_title",
+      condition: () => true,
       perform: (e) => showNoteDropdown(e, toolbar)
     });
   });
@@ -23,7 +25,6 @@ function showNoteDropdown(e, toolbar) {
     { type: 'positive', icon: 'check-circle', title: 'Успех', color: '#4caf50' },
     { type: 'caution', icon: 'exclamation-circle', title: 'Осторожно', color: '#e91e63' }
   ];
-
   // Create dropdown menu
   const dropdown = document.createElement('div');
   dropdown.className = 'note-types-dropdown';
@@ -31,31 +32,31 @@ function showNoteDropdown(e, toolbar) {
     position: absolute;
     top: 100%;
     left: 0;
-    background: var(--primary-very-low);
+    background: var(--secondary);
     border: 1px solid var(--primary-low);
     border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-dropdown);
     z-index: 1000;
-    min-width: 200px;
+    min-width: 220px;
     padding: 8px 0;
     margin-top: 4px;
   `;
 
   noteTypes.forEach(noteType => {
     const button = document.createElement('button');
-    button.className = 'note-type-button';
-    button.style.cssText = `
+    button.className = 'note-type-button';    button.style.cssText = `
       width: 100%;
-      padding: 8px 16px;
+      padding: 10px 16px;
       border: none;
       background: transparent;
       color: var(--primary);
       text-align: left;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
       transition: background-color 0.2s;
+      font-size: 14px;
     `;
     
     button.innerHTML = `

@@ -3,7 +3,7 @@
 ru:
   js:
     note:
-      composer_title: "Вставить заметку"
+      composer_title: "Заметки"
       note_title: "Заметка"
       info_title: "Информация"
       warn_title: "Предупреждение"
