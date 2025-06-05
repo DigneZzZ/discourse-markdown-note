@@ -1,0 +1,12 @@
+# English translations for note plugin
+
+en:
+  js:
+    note:
+      composer_title: "Insert Note"
+      note_title: "Note"
+      info_title: "Information"
+      warn_title: "Warning"
+      negative_title: "Attention"
+      positive_title: "Success"
+      caution_title: "Caution"

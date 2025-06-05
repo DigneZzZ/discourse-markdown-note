@@ -1,0 +1,12 @@
+# Russian translations for note plugin
+
+ru:
+  js:
+    note:
+      composer_title: "Вставить заметку"
+      note_title: "Заметка"
+      info_title: "Информация"
+      warn_title: "Предупреждение"
+      negative_title: "Внимание"
+      positive_title: "Успех"
+      caution_title: "Осторожно"
