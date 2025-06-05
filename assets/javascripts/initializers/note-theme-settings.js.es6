@@ -1,6 +1,7 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-function initializeNoteThemeSettings(api) {  // Detect theme status more reliably
+function initializeNoteThemeSettings(api) {
+  // Detect theme status more reliably
   function isDarkTheme() {
     const theme = document.documentElement.getAttribute('data-theme');
     const bodyClasses = document.body.className;
@@ -28,6 +29,15 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
     const siteSettings = api.container.lookup("site-settings:main");
     const dark = isDarkTheme();
     
+    // First, make sure we have the right theme class on the root element
+    if (dark) {
+      document.documentElement.classList.add('discourse-dark');
+      document.documentElement.classList.remove('discourse-light');
+    } else {
+      document.documentElement.classList.add('discourse-light');
+      document.documentElement.classList.remove('discourse-dark');
+    }
+    
     const root = document.documentElement;
     
     // Apply display options
@@ -40,7 +50,7 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
     // Debug current theme status
     console.log('[Markdown Notes] Theme: ' + (dark ? 'Dark' : 'Light'));
     
-    // Helper function to set CSS variables
+    // Helper function to set CSS variables - now with !important for both themes
     function setCSSVar(name, lightSetting, darkSetting, borderSetting = null) {
       const settingPrefix = 'discourse_markdown_note_';
       const bgSuffix = dark ? '_bg_dark' : '_bg_light';
@@ -50,10 +60,11 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
       const textValue = siteSettings[settingPrefix + name + textSuffix];
       const borderValue = borderSetting ? siteSettings[borderSetting] : null;
       
-      root.style.setProperty(`--${name}-bg-color`, bgValue);
-      root.style.setProperty(`--${name}-text-color`, textValue);
+      // Add !important to all styles for greater specificity
+      root.style.setProperty(`--${name}-bg-color`, bgValue + ' !important');
+      root.style.setProperty(`--${name}-text-color`, textValue + ' !important');
       if (borderValue) {
-        root.style.setProperty(`--${name}-border-color`, borderValue);
+        root.style.setProperty(`--${name}-border-color`, borderValue + ' !important');
       }
     }
     
@@ -68,7 +79,8 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
   
   // Apply styles on initialization
   applyNoteStyles();
-    // Watch for theme changes
+  
+  // Watch for theme changes with improved logic
   const observer = new MutationObserver(function(mutations) {
     let shouldApplyStyles = false;
     
@@ -79,18 +91,20 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
       }
     });
     
-    if (shouldApplyStyles) {    // Delay application slightly to ensure all theme classes are applied
-      // Apply multiple times to ensure changes are caught
-      setTimeout(() => {
-        applyNoteStyles();
-        console.log('[Markdown Notes] Styles reapplied after theme change (first pass)');
-        
-        // Apply again after a longer delay for reliability
+    if (shouldApplyStyles) {
+      // Apply styles multiple times with increasing delays to ensure proper application
+      console.log('[Markdown Notes] Theme change detected, reapplying styles');
+      
+      // First immediate application
+      applyNoteStyles();
+      
+      // Then a sequence of delayed applications to catch any race conditions
+      [50, 200, 500, 1000].forEach(delay => {
         setTimeout(() => {
           applyNoteStyles();
-          console.log('[Markdown Notes] Styles reapplied after theme change (second pass)');
-        }, 500);
-      }, 50);
+          console.log(`[Markdown Notes] Styles reapplied after ${delay}ms`);
+        }, delay);
+      });
     }
   });
   
@@ -109,7 +123,8 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
   api.onPageChange(() => {
     applyNoteStyles();
   });
-    // Listen for color scheme changes
+  
+  // Listen for color scheme changes
   const colorSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
   
   // Use the appropriate event listener based on browser support

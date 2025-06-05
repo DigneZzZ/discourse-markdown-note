@@ -1,5 +1,7 @@
-// Base CSS variables for customizable note colors - default fallbacks
+// Base CSS variables for customizable note colors
+// CSS-based theme detection with light mode as default
 :root {
+  // Light theme values - the default
   --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   --note-border-color: #6c757d;
   --note-text-color: #495057;
@@ -20,36 +22,39 @@
   --caution-text-color: #ad1457;
 }
 
-// Dark theme fallback defaults - will be overridden by JavaScript
+// Light theme selectors - explicit to override any dark settings with !important
+:root:not([data-theme="dark"]),
+:root:not(.discourse-dark),
+html[data-theme="light"],
+.light-theme,
+.discourse-light {
+  --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  --note-border-color: #6c757d !important;
+  --note-text-color: #495057 !important;
+  --info-bg-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+  --info-border-color: #2196f3 !important;
+  --info-text-color: #1565c0 !important;
+  --warn-bg-color: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%) !important;
+  --warn-border-color: #ff9800 !important;
+  --warn-text-color: #e65100 !important;
+  --negative-bg-color: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%) !important;
+  --negative-border-color: #f44336 !important;
+  --negative-text-color: #c62828 !important;
+  --positive-bg-color: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%) !important;
+  --positive-border-color: #4caf50 !important;
+  --positive-text-color: #2e7d32 !important;
+  --caution-bg-color: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%) !important;
+  --caution-border-color: #e91e63 !important;
+  --caution-text-color: #ad1457 !important;
+}
+
+// Dark theme selectors
 :root.discourse-dark,
 html[data-theme="dark"],
 body.dark-theme,
 .dark,
 .d-dark-mode,
 html[class*="color-scheme-dark"] {
-  --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%) !important;
-  --note-border-color: #6c757d !important;
-  --note-text-color: #b0b0b0 !important;
-  --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%) !important;
-  --info-border-color: #2196f3 !important;
-  --info-text-color: #90caf9 !important;
-  --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%) !important;
-  --warn-border-color: #ff9800 !important;
-  --warn-text-color: #ffcc02 !important;
-  --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%) !important;
-  --negative-border-color: #f44336 !important;
-  --negative-text-color: #ff8a80 !important;
-  --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%) !important;
-  --positive-border-color: #4caf50 !important;
-  --positive-text-color: #a5d6a7 !important;
-  --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%) !important;
-  --caution-border-color: #e91e63 !important;
-  --caution-text-color: #f48fb1 !important;
-}
-
-// Additional selector for greater specificity in dark themes
-.d-dark-mode .p-notification,
-html[data-theme="dark"] .p-notification {
   --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%) !important;
   --note-border-color: #6c757d !important;
   --note-text-color: #b0b0b0 !important;
