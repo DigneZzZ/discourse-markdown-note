@@ -1,16 +1,26 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-function initializeNoteThemeSettings(api) {
-  // Detect theme status more reliably
+function initializeNoteThemeSettings(api) {  // Detect theme status more reliably
   function isDarkTheme() {
     const theme = document.documentElement.getAttribute('data-theme');
     const bodyClasses = document.body.className;
+    const schemePreference = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const discourseColorScheme = api.container.lookup('service:color-scheme');
     
-    // Check multiple conditions to detect dark theme
-    return theme === 'dark' || 
-           bodyClasses.includes('dark-theme') || 
-           bodyClasses.includes('dark') ||
-           window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Debug checks
+    console.log('[Markdown Notes] Theme checks: ', {
+      'data-theme': theme,
+      'body-classes': bodyClasses.includes('dark-theme') || bodyClasses.includes('dark'),
+      'prefers-dark': schemePreference,
+      'discourse-scheme': discourseColorScheme && discourseColorScheme.isDark
+    });
+    
+    // Check multiple conditions to detect dark theme with priority
+    if (theme === 'dark') return true;
+    if (theme === 'light') return false;
+    if (bodyClasses.includes('dark-theme') || bodyClasses.includes('dark')) return true;
+    if (discourseColorScheme && typeof discourseColorScheme.isDark === 'boolean') return discourseColorScheme.isDark;
+    return schemePreference;
   }
   
   // Apply theme-based settings to CSS variables and display options
