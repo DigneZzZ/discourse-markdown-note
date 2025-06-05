@@ -74,14 +74,77 @@ export function setup(helper) {
             }
             state.tokens.push(element)
           });
-          
-          // Close the wrapper elements
+            // Close the wrapper elements
           state.push('div_close', 'div', -1);
           state.push('div_close', 'div', -1);
           state.push('div_close', 'div', -1);
 
-          return true;        }
-      });
+          return true;
+        }      });
+    });
+
+    // Support for legacy [note type=""] syntax
+    md.block.bbcode.ruler.push('note-legacy', {
+      tag: 'note',
+      replace: function(state, tagInfo, content) {
+        const attrs = tagInfo.attrs || {};
+        const noteType = attrs.type || 'note';
+        
+        // Map legacy type names to new format
+        const legacyMapping = {
+          'info': 'info',
+          'warn': 'warn', 
+          'warning': 'warn',
+          'error': 'negative',
+          'negative': 'negative',
+          'success': 'positive',
+          'positive': 'positive',
+          'danger': 'negative',
+          'important': 'caution',
+          'caution': 'caution'
+        };
+
+        const mappedType = legacyMapping[noteType] || 'note';
+        let notificationClass = 'p-notification--' + mappedType;
+
+        // Start wrapper elements
+        state.push('div_open', 'div', 1).attrSet('class', 'p-notification');
+        state.push('div_open', 'div', 1).attrSet('class', notificationClass);
+        state.push('div_open', 'div', 1).attrSet('class', 'p-notification__response');
+        
+        // Add icon span
+        state.push('span_open', 'span', 1).attrSet('class', 'p-notification__icon');
+        state.push('span_close', 'span', -1);
+        
+        // Add status based on note type
+        state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
+        const statusText = {
+          'note': 'Заметка',
+          'info': 'Информация', 
+          'warn': 'Предупреждение',
+          'negative': 'Внимание',
+          'positive': 'Успех',
+          'caution': 'Осторожно'
+        };
+        state.push('text', '', 0).content = (statusText[mappedType] || 'Заметка') + ': ';
+        state.push('span_close', 'span', -1);
+
+        // Add the note content
+        const tokens = state.md.parse(content, state.md);
+        tokens.forEach(element => {
+          if (element.type == "inline") {
+            element.content = ""
+          }
+          state.tokens.push(element)
+        });
+        
+        // Close the wrapper elements
+        state.push('div_close', 'div', -1);
+        state.push('div_close', 'div', -1);
+        state.push('div_close', 'div', -1);
+
+        return true;
+      }
     });
   });
 }

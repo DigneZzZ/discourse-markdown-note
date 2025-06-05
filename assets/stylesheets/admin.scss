@@ -1,0 +1,248 @@
+// Стили для административной панели настроек заметок
+.markdown-note-settings {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  .description {
+    font-size: 16px;
+    color: var(--primary-medium);
+    margin-bottom: 30px;
+    line-height: 1.5;
+  }
+  
+  .note-type-section {
+    background: var(--secondary);
+    border: 1px solid var(--primary-low);
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    h3 {
+      margin: 0 0 20px 0;
+      color: var(--primary);
+      font-size: 18px;
+      font-weight: 600;
+      border-bottom: 2px solid var(--primary-low);
+      padding-bottom: 10px;
+    }
+    
+    .color-settings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+      
+      .color-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        
+        label {
+          font-weight: 500;
+          color: var(--primary);
+          font-size: 14px;
+        }
+        
+        .color-picker {
+          width: 100%;
+          height: 40px;
+          border: 2px solid var(--primary-low);
+          border-radius: 6px;
+          cursor: pointer;
+          transition: border-color 0.2s;
+          
+          &:hover {
+            border-color: var(--tertiary);
+          }
+          
+          &:focus {
+            outline: none;
+            border-color: var(--tertiary);
+            box-shadow: 0 0 0 2px rgba(var(--tertiary-rgb), 0.2);
+          }
+        }
+      }
+    }
+    
+    .preview-section {
+      h4 {
+        margin: 0 0 15px 0;
+        color: var(--primary);
+        font-size: 16px;
+        font-weight: 500;
+      }
+      
+      .md-note {
+        background: var(--note-bg, #e8f4fd) !important;
+        border-left: 4px solid var(--note-border, #1f8ce6) !important;
+        color: var(--note-text, #0c5aa6) !important;
+        padding: 15px 20px;
+        border-radius: 0 6px 6px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 0;
+        transition: all 0.3s ease;
+        
+        .note-icon {
+          font-size: 18px;
+          flex-shrink: 0;
+          line-height: 1;
+        }
+        
+        .note-content {
+          flex: 1;
+          font-size: 14px;
+          line-height: 1.5;
+        }
+        
+        // Специфичные стили для каждого типа заметки
+        &.info {
+          background: var(--info-bg, #fff8e1) !important;
+          border-left-color: var(--info-border, #ff9800) !important;
+          color: var(--info-text, #e65100) !important;
+        }
+        
+        &.warn {
+          background: var(--warn-bg, #fff3e0) !important;
+          border-left-color: var(--warn-border, #ff5722) !important;
+          color: var(--warn-text, #d84315) !important;
+        }
+        
+        &.negative {
+          background: var(--negative-bg, #ffebee) !important;
+          border-left-color: var(--negative-border, #f44336) !important;
+          color: var(--negative-text, #c62828) !important;
+        }
+        
+        &.positive {
+          background: var(--positive-bg, #e8f5e8) !important;
+          border-left-color: var(--positive-border, #4caf50) !important;
+          color: var(--positive-text, #2e7d32) !important;
+        }
+        
+        &.caution {
+          background: var(--caution-bg, #fce4ec) !important;
+          border-left-color: var(--caution-border, #e91e63) !important;
+          color: var(--caution-text, #ad1457) !important;
+        }
+      }
+    }
+  }
+  
+  .admin-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-low);
+    
+    .btn {
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.2s;
+      min-width: 140px;
+      
+      &.btn-primary {
+        background: var(--tertiary);
+        color: var(--secondary);
+        border: 2px solid var(--tertiary);
+        
+        &:hover {
+          background: var(--tertiary-hover);
+          border-color: var(--tertiary-hover);
+          transform: translateY(-1px);
+        }
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+      
+      &.btn-default {
+        background: var(--secondary);
+        color: var(--primary);
+        border: 2px solid var(--primary-low);
+        
+        &:hover {
+          background: var(--primary-very-low);
+          border-color: var(--primary-medium);
+        }
+      }
+    }
+  }
+  
+  .admin-status {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    min-height: 20px;
+    
+    &.success {
+      background: var(--success-low);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    
+    &.error {
+      background: var(--danger-low);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+  }
+}
+
+// Темная тема
+html[data-theme="dark"], 
+body.dark-theme, 
+.dark {
+  .markdown-note-settings {
+    .note-type-section {
+      background: var(--secondary);
+      border-color: var(--primary-low);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .color-picker {
+      background: var(--secondary);
+      
+      &:hover, &:focus {
+        background: var(--primary-very-low);
+      }
+    }
+  }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .markdown-note-settings {
+    padding: 15px;
+    
+    .note-type-section {
+      padding: 20px 15px;
+      
+      .color-settings {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .admin-actions {
+      flex-direction: column;
+      align-items: center;
+      
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  }
+}

@@ -1,16 +1,55 @@
+// Base CSS variables for customizable note colors
+:root {
+  --note-bg-color: #e8f4fd;
+  --note-border-color: #1f8ce6;
+  --note-text-color: #0c5aa6;
+  --info-bg-color: #fff8e1;
+  --info-border-color: #ff9800;
+  --info-text-color: #e65100;
+  --warn-bg-color: #fff3e0;
+  --warn-border-color: #ff5722;
+  --warn-text-color: #d84315;
+  --negative-bg-color: #ffebee;
+  --negative-border-color: #f44336;
+  --negative-text-color: #c62828;
+  --positive-bg-color: #e8f5e8;
+  --positive-border-color: #4caf50;
+  --positive-text-color: #2e7d32;
+  --caution-bg-color: #fce4ec;
+  --caution-border-color: #e91e63;
+  --caution-text-color: #ad1457;
+}
+
+// Dark theme overrides
+html[data-theme="dark"],
+body.dark-theme,
+.dark {
+  --note-bg-color: #1a2332;
+  --note-border-color: #42a5f5;
+  --note-text-color: #90caf9;
+  --info-bg-color: #1a2332;
+  --info-border-color: #42a5f5;
+  --info-text-color: #90caf9;
+  --warn-bg-color: #332b1a;
+  --warn-border-color: #ffb74d;
+  --warn-text-color: #ffcc02;
+  --negative-bg-color: #331a1a;
+  --negative-border-color: #ef5350;
+  --negative-text-color: #ff8a80;
+  --positive-bg-color: #1a331a;
+  --positive-border-color: #66bb6a;
+  --positive-text-color: #a5d6a7;
+  --caution-bg-color: #331a26;
+  --caution-border-color: #ec407a;
+  --caution-text-color: #f48fb1;
+}
+
 // Base notification styles
 .p-notification {
   margin-bottom: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-}
-
-// Dark theme adjustments
-html[data-theme="dark"] .p-notification,
-body.dark-theme .p-notification,
-.dark .p-notification {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .p-notification__response {
@@ -21,7 +60,6 @@ body.dark-theme .p-notification,
   color: var(--primary);
 }
 
-// Icon styling
 .p-notification__icon {
   position: absolute;
   left: 1rem;
@@ -44,290 +82,214 @@ body.dark-theme .p-notification,
 
 // Note type styles
 .p-notification--note {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-left: 4px solid #6c757d;
-  
-  .p-notification__response {
-    background: rgba(248, 249, 250, 0.7);
-  }
-  
-  .p-notification__icon {
-    background: #6c757d;
-    &::before {
-      content: "📝";
-    }
-  }
-  
-  .p-notification__status {
-    color: #495057;
-  }
+  background: var(--note-bg-color);
+  border-left: 4px solid var(--note-border-color);
 }
 
-// Dark theme for note
-html[data-theme="dark"] .p-notification--note,
-body.dark-theme .p-notification--note,
-.dark .p-notification--note {
-  background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
-  border-left-color: #8a8a8a;
-  
-  .p-notification__response {
-    background: rgba(44, 44, 44, 0.7);
-    color: #e0e0e0;
-  }
-  
-  .p-notification__status {
-    color: #b0b0b0;
-  }
+.p-notification--note .p-notification__response {
+  color: var(--note-text-color);
+}
+
+.p-notification--note .p-notification__icon {
+  background: var(--note-border-color);
+}
+
+.p-notification--note .p-notification__icon::before {
+  content: "📝";
+}
+
+.p-notification--note .p-notification__status {
+  color: var(--note-text-color);
 }
 
 .p-notification--info {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  border-left: 4px solid #2196f3;
-  
-  .p-notification__response {
-    background: rgba(227, 242, 253, 0.7);
-  }
-  
-  .p-notification__icon {
-    background: #2196f3;
-    &::before {
-      content: "ℹ️";
-    }
-  }
-  
-  .p-notification__status {
-    color: #1565c0;
-  }
+  background: var(--info-bg-color);
+  border-left: 4px solid var(--info-border-color);
 }
 
-// Dark theme for info
-html[data-theme="dark"] .p-notification--info,
-body.dark-theme .p-notification--info,
-.dark .p-notification--info {
-  background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
-  border-left-color: #42a5f5;
-  
-  .p-notification__response {
-    background: rgba(26, 35, 50, 0.7);
-    color: #e3f2fd;
-  }
-  
-  .p-notification__status {
-    color: #90caf9;
-  }
+.p-notification--info .p-notification__response {
+  color: var(--info-text-color);
+}
+
+.p-notification--info .p-notification__icon {
+  background: var(--info-border-color);
+}
+
+.p-notification--info .p-notification__icon::before {
+  content: "💡";
+}
+
+.p-notification--info .p-notification__status {
+  color: var(--info-text-color);
 }
 
 .p-notification--warn {
-  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-  border-left: 4px solid #ff9800;
-  
-  .p-notification__response {
-    background: rgba(255, 248, 225, 0.7);
-  }
-  
-  .p-notification__icon {
-    background: #ff9800;
-    &::before {
-      content: "⚠️";
-    }
-  }
-  
-  .p-notification__status {
-    color: #e65100;
-  }
+  background: var(--warn-bg-color);
+  border-left: 4px solid var(--warn-border-color);
 }
 
-// Dark theme for warn
-html[data-theme="dark"] .p-notification--warn,
-body.dark-theme .p-notification--warn,
-.dark .p-notification--warn {
-  background: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
-  border-left-color: #ffb74d;
-  
-  .p-notification__response {
-    background: rgba(51, 43, 26, 0.7);
-    color: #fff8e1;
-  }
-  
-  .p-notification__status {
-    color: #ffcc02;
-  }
+.p-notification--warn .p-notification__response {
+  color: var(--warn-text-color);
+}
+
+.p-notification--warn .p-notification__icon {
+  background: var(--warn-border-color);
+}
+
+.p-notification--warn .p-notification__icon::before {
+  content: "⚠️";
+}
+
+.p-notification--warn .p-notification__status {
+  color: var(--warn-text-color);
 }
 
 .p-notification--negative {
-  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-  border-left: 4px solid #f44336;
-  
-  .p-notification__response {
-    background: rgba(255, 235, 238, 0.7);
-  }
-  
-  .p-notification__icon {
-    background: #f44336;
-    &::before {
-      content: "❌";
-    }
-  }
-  
-  .p-notification__status {
-    color: #c62828;
-  }
+  background: var(--negative-bg-color);
+  border-left: 4px solid var(--negative-border-color);
 }
 
-// Dark theme for negative
-html[data-theme="dark"] .p-notification--negative,
-body.dark-theme .p-notification--negative,
-.dark .p-notification--negative {
-  background: linear-gradient(135deg, #331a1a 0%, #472424 100%);
-  border-left-color: #ef5350;
-  
-  .p-notification__response {
-    background: rgba(51, 26, 26, 0.7);
-    color: #ffebee;
-  }
-  
-  .p-notification__status {
-    color: #ff8a80;
-  }
+.p-notification--negative .p-notification__response {
+  color: var(--negative-text-color);
+}
+
+.p-notification--negative .p-notification__icon {
+  background: var(--negative-border-color);
+}
+
+.p-notification--negative .p-notification__icon::before {
+  content: "❌";
+}
+
+.p-notification--negative .p-notification__status {
+  color: var(--negative-text-color);
 }
 
 .p-notification--positive {
-  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
-  border-left: 4px solid #4caf50;
-  
-  .p-notification__response {
-    background: rgba(232, 245, 232, 0.7);
-  }
-  
-  .p-notification__icon {
-    background: #4caf50;
-    &::before {
-      content: "✅";
-    }
-  }
-  
-  .p-notification__status {
-    color: #2e7d32;
-  }
+  background: var(--positive-bg-color);
+  border-left: 4px solid var(--positive-border-color);
 }
 
-// Dark theme for positive
-html[data-theme="dark"] .p-notification--positive,
-body.dark-theme .p-notification--positive,
-.dark .p-notification--positive {
-  background: linear-gradient(135deg, #1a331a 0%, #244724 100%);
-  border-left-color: #66bb6a;
-  
-  .p-notification__response {
-    background: rgba(26, 51, 26, 0.7);
-    color: #e8f5e8;
-  }
-  
-  .p-notification__status {
-    color: #a5d6a7;
-  }
+.p-notification--positive .p-notification__response {
+  color: var(--positive-text-color);
+}
+
+.p-notification--positive .p-notification__icon {
+  background: var(--positive-border-color);
+}
+
+.p-notification--positive .p-notification__icon::before {
+  content: "✅";
+}
+
+.p-notification--positive .p-notification__status {
+  color: var(--positive-text-color);
 }
 
 .p-notification--caution {
-  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
-  border-left: 4px solid #e91e63;
-  
-  .p-notification__response {
-    background: rgba(252, 228, 236, 0.7);
-  }
-  
-  .p-notification__icon {
-    background: #e91e63;
-    &::before {
-      content: "🚨";
-    }
-  }
-  
-  .p-notification__status {
-    color: #ad1457;
-  }
+  background: var(--caution-bg-color);
+  border-left: 4px solid var(--caution-border-color);
 }
 
-// Dark theme for caution
-html[data-theme="dark"] .p-notification--caution,
-body.dark-theme .p-notification--caution,
-.dark .p-notification--caution {
-  background: linear-gradient(135deg, #331a26 0%, #472433 100%);
-  border-left-color: #ec407a;
-  
-  .p-notification__response {
-    background: rgba(51, 26, 38, 0.7);
-    color: #fce4ec;
-  }
-  
-  .p-notification__status {
-    color: #f48fb1;
-  }
+.p-notification--caution .p-notification__response {
+  color: var(--caution-text-color);
 }
 
-// Legacy support for old class names
-.p-notification--important {
-  @extend .p-notification--info;
+.p-notification--caution .p-notification__icon {
+  background: var(--caution-border-color);
 }
 
-// Editor button styles
+.p-notification--caution .p-notification__icon::before {
+  content: "🚨";
+}
+
+.p-notification--caution .p-notification__status {
+  color: var(--caution-text-color);
+}
+
+// Editor dropdown styles
 .note-types-dropdown {
   background: var(--secondary);
   border: 1px solid var(--primary-low);
-  box-shadow: var(--shadow-dropdown);
-  
-  .note-type-button {
-    color: var(--primary);
-    
-    &:hover {
-      background-color: var(--primary-very-low) !important;
-    }
-    
-    &:focus {
-      outline: 2px solid var(--tertiary);
-      outline-offset: -2px;
-    }
-  }
+  border-radius: 6px;
+  padding: 4px 0;
+  min-width: 200px;
+  position: fixed;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-// Dark theme for dropdown
+.note-type-button {
+  color: var(--primary);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.note-type-button:hover {
+  background-color: var(--primary-very-low);
+}
+
+.note-type-button .note-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+// Dark theme adjustments
+html[data-theme="dark"] .p-notification,
+body.dark-theme .p-notification,
+.dark .p-notification {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 html[data-theme="dark"] .note-types-dropdown,
 body.dark-theme .note-types-dropdown,
 .dark .note-types-dropdown {
-  background: var(--secondary);
-  border-color: var(--primary-medium);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-// Composer toolbar button styling
-.d-editor-button-bar {
-  .note-button-group {
-    display: inline-flex;
-    margin: 0 2px;
-  }
-  
-  button[data-id="insert-note"] {
-    &.active {
-      background-color: var(--primary-low);
-      color: var(--primary);
-    }
-    
-    &:hover {
-      background-color: var(--primary-very-low);
-    }
-  }
+// Composer button styles
+.d-editor-button-bar button[data-id="insert-note"]:hover {
+  background-color: var(--primary-very-low);
 }
 
-// Dark theme for toolbar button
-html[data-theme="dark"] .d-editor-button-bar button[data-id="insert-note"],
-body.dark-theme .d-editor-button-bar button[data-id="insert-note"],
-.dark .d-editor-button-bar button[data-id="insert-note"] {
-  &:hover {
-    background-color: var(--primary-low);
+.d-editor-button-bar button[data-id="insert-note"].active {
+  background-color: var(--primary-low);
+  color: var(--primary);
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .p-notification {
+    margin-bottom: 1rem;
   }
   
-  &.active {
-    background-color: var(--primary-medium);
-    color: var(--secondary);
+  .p-notification__response {
+    padding: 0.75rem 0.75rem 0.75rem 3rem;
+  }
+  
+  .p-notification__icon {
+    left: 0.75rem;
+    top: 0.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 0.75rem;
+  }
+  
+  .note-types-dropdown {
+    min-width: 180px;
+  }
+  
+  .note-type-button {
+    padding: 6px 12px;
+    font-size: 14px;
   }
 }
