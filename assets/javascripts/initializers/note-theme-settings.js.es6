@@ -79,11 +79,17 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
       }
     });
     
-    if (shouldApplyStyles) {
-      // Delay application slightly to ensure all theme classes are applied
+    if (shouldApplyStyles) {    // Delay application slightly to ensure all theme classes are applied
+      // Apply multiple times to ensure changes are caught
       setTimeout(() => {
         applyNoteStyles();
-        console.log('[Markdown Notes] Styles reapplied after theme change');
+        console.log('[Markdown Notes] Styles reapplied after theme change (first pass)');
+        
+        // Apply again after a longer delay for reliability
+        setTimeout(() => {
+          applyNoteStyles();
+          console.log('[Markdown Notes] Styles reapplied after theme change (second pass)');
+        }, 500);
       }, 50);
     }
   });
