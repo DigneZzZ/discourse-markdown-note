@@ -1,164 +1,69 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import { iconHTML } from "discourse-common/lib/icon-library";
 
 function initializeNoteButtons(api) {
   api.onToolbarCreate(toolbar => {
-    // Add note button to the main toolbar
-    toolbar.addButton({
-      id: "insert-note",
-      group: "fontStyles", // Put it with other formatting buttons
-      icon: "sticky-note", // Standard icon name without prefix
-      title: "note.composer_title",
-      condition: () => true,
-      perform: (e) => showNoteDropdown(e, toolbar)
+    // Add individual note buttons to the extras group (the "..." menu)
+    const noteTypes = [
+      { type: 'note', label: 'N', title: 'Заметка', example: 'Обычная заметка' },
+      { type: 'info', label: 'I', title: 'Информация', example: 'Полезная информация' },
+      { type: 'warn', label: 'W', title: 'Предупреждение', example: 'Важное предупреждение' },
+      { type: 'negative', label: '-', title: 'Негативно', example: 'Негативная информация' },
+      { type: 'positive', label: '+', title: 'Позитивно', example: 'Позитивная информация' },
+      { type: 'caution', label: 'C', title: 'Осторожно', example: 'Будьте осторожны' }
+    ];
+
+    noteTypes.forEach(noteType => {
+      toolbar.addButton({
+        id: `insert-note-${noteType.type}`,
+        group: "extras",
+        label: noteType.label,
+        title: `${noteType.title}: [${noteType.type}]${noteType.example}[/${noteType.type}]`,
+        condition: () => true,
+        perform: () => insertNote(noteType.type, noteType.example, toolbar)
+      });
     });
     
-    // Debug log
-    console.log('[Markdown Notes] Note button added to toolbar');
+    console.log('[Markdown Notes] Note buttons added to extras menu');
   });
 }
 
-function showNoteDropdown(e, toolbar) {
-  // Debug log
-  console.log('[Markdown Notes] Opening note dropdown', e);
-  
-  // Remove existing dropdown if any
-  const existingDropdown = document.querySelector('.note-types-dropdown');
-  if (existingDropdown) {
-    existingDropdown.remove();
-    return;
-  }
-  
-  // Get I18n instance from Discourse
-  const I18n = require("I18n").default;
-  
-  const noteTypes = [
-    { type: 'note', icon: 'sticky-note', title: I18n.t('note.note_title'), color: '#6c757d' },
-    { type: 'info', icon: 'info-circle', title: I18n.t('note.info_title'), color: '#2196f3' },
-    { type: 'warn', icon: 'exclamation-triangle', title: I18n.t('note.warn_title'), color: '#ff9800' },
-    { type: 'negative', icon: 'times-circle', title: I18n.t('note.negative_title'), color: '#f44336' },
-    { type: 'positive', icon: 'check-circle', title: I18n.t('note.positive_title'), color: '#4caf50' },
-    { type: 'caution', icon: 'exclamation-circle', title: I18n.t('note.caution_title'), color: '#e91e63' }
-  ];
-
-  // Create dropdown menu
-  const dropdown = document.createElement('div');
-  dropdown.className = 'note-types-dropdown';
-  dropdown.style.cssText = `
-    position: fixed;
-    background: var(--secondary);
-    border: 1px solid var(--primary-low);
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    min-width: 220px;
-    padding: 8px 0;
-  `;
-
-  noteTypes.forEach(noteType => {
-    const button = document.createElement('button');
-    button.className = 'note-type-button';
-    button.style.cssText = `
-      width: 100%;
-      padding: 10px 16px;
-      border: none;
-      background: transparent;
-      color: var(--primary);
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      font-size: 14px;
-    `;
+function insertNote(noteType, exampleText, toolbar) {
+  try {
+    const noteText = `[${noteType}]${exampleText}[/${noteType}]`;
+    toolbar.applySurround('', '', noteText);
+    console.log(`[Markdown Notes] Inserted ${noteType} note`);
+  } catch (e) {
+    console.error('[Markdown Notes] Error inserting note:', e);
     
-    button.innerHTML = `
-      <span style="color: ${noteType.color};">${iconHTML(noteType.icon)}</span>
-      <span>${noteType.title}</span>
-    `;
-    
-    button.addEventListener('mouseenter', () => {
-      button.style.backgroundColor = 'var(--primary-very-low)';
-    });
-    
-    button.addEventListener('mouseleave', () => {
-      button.style.backgroundColor = 'transparent';
-    });
-    
-    button.addEventListener('click', () => {
-      insertNoteTag(toolbar, noteType.type);
-      dropdown.remove();
-    });
-    
-    dropdown.appendChild(button);
-  });
-
-  // Position dropdown below the button
-  // Get button element using multiple strategies
-  let buttonElement;
-  
-  // Try to find button from event
-  if (e && e.target) {
-    buttonElement = e.target.closest('button');
-  } else if (e && e.srcElement) {
-    buttonElement = e.srcElement.closest('button');
-  }
-  
-  // Fallback to find button by class/id in DOM
-  if (!buttonElement) {
-    buttonElement = document.querySelector('button.insert-note') || 
-                    document.querySelector('button#insert-note') ||
-                    document.querySelector('.d-editor-button-bar .btn-icon[data-icon="sticky-note"]');
-  }
-  
-  console.log('[Markdown Notes] Button element found:', buttonElement);
-  
-  if (buttonElement) {
-    // Position dropdown relative to button
-    const rect = buttonElement.getBoundingClientRect();
-    dropdown.style.left = rect.left + 'px';
-    dropdown.style.top = (rect.bottom + 5) + 'px';
-    
-    document.body.appendChild(dropdown);
-    
-    // Close dropdown when clicking outside
-    const closeDropdown = (event) => {
-      if (!dropdown.contains(event.target) && !buttonElement.contains(event.target)) {
-        dropdown.remove();
-        document.removeEventListener('click', closeDropdown);
+    try {
+      const textArea = document.querySelector('#reply-control .d-editor-input');
+      if (textArea) {
+        const startPos = textArea.selectionStart;
+        const endPos = textArea.selectionEnd;
+        const currentText = textArea.value;
+        
+        const newText = currentText.substring(0, startPos) + 
+                       noteText + 
+                       currentText.substring(endPos);
+        
+        textArea.value = newText;
+        textArea.focus();
+        
+        const newCursorPos = startPos + noteText.length;
+        textArea.setSelectionRange(newCursorPos, newCursorPos);
+        
+        textArea.dispatchEvent(new Event('input', { bubbles: true }));
+        
+        console.log(`[Markdown Notes] Fallback: Inserted ${noteType} note`);
       }
-    };
-    
-    // Add event listener with delay to avoid immediate closure
-    setTimeout(() => {
-      document.addEventListener('click', closeDropdown);
-    }, 10);
-  } else {
-    // If button can't be found, position in center of editor
-    const editor = document.querySelector('.d-editor');
-    if (editor) {
-      const rect = editor.getBoundingClientRect();
-      dropdown.style.left = (rect.left + rect.width / 2 - 110) + 'px'; // 110px is half dropdown width
-      dropdown.style.top = (rect.top + 100) + 'px';
-      document.body.appendChild(dropdown);
+    } catch (fallbackError) {
+      console.error('[Markdown Notes] Fallback also failed:', fallbackError);
     }
   }
 }
 
-function insertNoteTag(toolbar, noteType) {
-  const selected = toolbar.getSelected();
-  const text = selected.value || `Введите текст ${noteType} здесь`;
-  
-  const beforeSelection = `[${noteType}]\n`;
-  const afterSelection = `\n[/${noteType}]`;
-  
-  toolbar.applySurround(beforeSelection, afterSelection, text);
-}
-
 export default {
   name: "extend-composer-note-buttons",
-  
   initialize() {
     withPluginApi("0.8.31", initializeNoteButtons);
   }

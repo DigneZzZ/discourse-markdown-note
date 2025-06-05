@@ -2,6 +2,14 @@ discourse_markdown_note:
   discourse_markdown_note_enabled:
     default: true
     client: true
+  discourse_markdown_note_theme_mode:
+    default: 'auto'
+    type: enum
+    choices:
+      - auto
+      - light
+      - dark
+    client: true
   discourse_markdown_note_show_titles:
     default: true
     client: true

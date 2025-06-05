@@ -1,29 +1,73 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 function initializeNoteThemeSettings(api) {
-  // Simplified theme detection
+  // Improved theme detection based on user setting
+  function getThemeMode() {
+    try {
+      const siteSettings = api.container.lookup("site-settings:main");
+      const themeMode = siteSettings.discourse_markdown_note_theme_mode || 'auto';
+      
+      if (themeMode === 'light') return 'light';
+      if (themeMode === 'dark') return 'dark';
+      
+      // Auto mode - detect from Discourse using multiple methods
+      return isDarkTheme() ? 'dark' : 'light';
+    } catch (e) {
+      console.error('[Markdown Notes] Error detecting theme mode:', e);
+      return isDarkTheme() ? 'dark' : 'light';
+    }
+  }
+  
+  // Comprehensive dark theme detection for Discourse
   function isDarkTheme() {
-    const theme = document.documentElement.getAttribute('data-theme');
+    // Method 1: Check data-theme attribute on html element
+    const htmlTheme = document.documentElement.getAttribute('data-theme');
+    if (htmlTheme === 'dark') return true;
+    if (htmlTheme === 'light') return false;
     
-    // Check based on simple data-theme attribute
-    if (theme === 'dark') return true;
-    if (theme === 'light') return false;
+    // Method 2: Check for discourse-dark class
+    if (document.documentElement.classList.contains('discourse-dark')) return true;
     
-    // Fallback to body class check
+    // Method 3: Check body classes
     if (document.body.classList.contains('dark-theme') || 
-        document.body.classList.contains('dark')) {
+        document.body.classList.contains('dark') ||
+        document.body.classList.contains('discourse-dark')) {
+      return true;
+    }
+    
+    // Method 4: Check for color scheme class patterns
+    const htmlClasses = document.documentElement.className;
+    if (htmlClasses.includes('color-scheme-dark') || 
+        htmlClasses.includes('dark-mode') ||
+        htmlClasses.includes('d-dark-mode')) {
+      return true;
+    }
+    
+    // Method 5: Check CSS custom properties (if available)
+    try {
+      const computedStyle = getComputedStyle(document.documentElement);
+      const bgColor = computedStyle.getPropertyValue('--secondary').trim();
+      // Dark themes typically have dark secondary colors
+      if (bgColor && (bgColor.includes('#1') || bgColor.includes('#2') || bgColor.includes('#3'))) {
+        return true;
+      }
+    } catch (e) {
+      // Ignore CSS property check errors
+    }
+    
+    // Method 6: Check prefers-color-scheme as fallback
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return true;
     }
     
     // Default to light theme
     return false;
   }
-
   // Helper function to set CSS variables
   function setCSSVar(type, lightBgSetting, darkBgSetting, borderSetting) {
     try {
       const siteSettings = api.container.lookup("site-settings:main");
-      const dark = isDarkTheme();
+      const theme = getThemeMode();
       
       // Get background colors
       const lightBg = siteSettings[`discourse_markdown_note_${lightBgSetting}`] || '';
@@ -31,7 +75,7 @@ function initializeNoteThemeSettings(api) {
       const borderColor = siteSettings[borderSetting] || '';
       
       // Apply appropriate background
-      const currentBg = dark ? darkBg : lightBg;
+      const currentBg = theme === 'dark' ? darkBg : lightBg;
       if (currentBg) {
         document.documentElement.style.setProperty(`--note-${type}-bg`, currentBg);
       }
@@ -40,19 +84,31 @@ function initializeNoteThemeSettings(api) {
       if (borderColor) {
         document.documentElement.style.setProperty(`--note-${type}-border`, borderColor);
       }
+      
+      // Apply text colors based on theme
+      const lightTextSetting = `discourse_markdown_note_${type}_text_light`;
+      const darkTextSetting = `discourse_markdown_note_${type}_text_dark`;
+      const lightText = siteSettings[lightTextSetting] || '';
+      const darkText = siteSettings[darkTextSetting] || '';
+      
+      const currentText = theme === 'dark' ? darkText : lightText;
+      if (currentText) {
+        document.documentElement.style.setProperty(`--note-${type}-text`, currentText);
+      }
+      
+      console.log(`[Markdown Notes] Applied ${theme} theme for ${type} - BG: ${currentBg ? 'custom' : 'default'}, Text: ${currentText ? 'custom' : 'default'}`);
     } catch (e) {
       console.error(`[Markdown Notes] Error setting CSS vars for ${type}:`, e);
     }
   }
-
   // Apply theme-based settings to CSS variables and display options
   function applyNoteStyles() {
     try {
       const siteSettings = api.container.lookup("site-settings:main");
-      const dark = isDarkTheme();
+      const theme = getThemeMode();
       
       // Keep track of current theme with a data attribute
-      document.body.setAttribute('data-note-theme', dark ? 'dark' : 'light');
+      document.body.setAttribute('data-note-theme', theme);
       
       // Apply display options
       const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
@@ -68,42 +124,43 @@ function initializeNoteThemeSettings(api) {
       setCSSVar('negative', 'negative_bg_light', 'negative_bg_dark', 'discourse_markdown_note_negative_border');
       setCSSVar('positive', 'positive_bg_light', 'positive_bg_dark', 'discourse_markdown_note_positive_border');
       setCSSVar('caution', 'caution_bg_light', 'caution_bg_dark', 'discourse_markdown_note_caution_border');
+      
+      console.log(`[Markdown Notes] Applied ${theme} theme styles (Dark: ${isDarkTheme()})`);
     } catch (e) {
       console.error('[Markdown Notes] Error applying note styles:', e);
     }
-  }
-  
+  }  
   // Apply styles on initialization
   applyNoteStyles();
-  
-  // Watch for theme changes with improved logic
+
+  // Enhanced event handling for theme changes
   const observer = new MutationObserver(function(mutations) {
     let shouldApplyStyles = false;
     
     mutations.forEach(function(mutation) {
-      if (mutation.type === 'attributes' && 
-          (mutation.attributeName === 'data-theme' || mutation.attributeName === 'class')) {
-        shouldApplyStyles = true;
+      if (mutation.type === 'attributes') {
+        const attrName = mutation.attributeName;
+        const target = mutation.target;
+        
+        // Check for theme-related attribute changes
+        if ((attrName === 'data-theme' && target === document.documentElement) ||
+            (attrName === 'class' && (target === document.documentElement || target === document.body))) {
+          shouldApplyStyles = true;
+        }
       }
     });
     
     if (shouldApplyStyles) {
-      // Apply styles multiple times with increasing delays to ensure proper application
-      console.log('[Markdown Notes] Theme change detected, reapplying styles');
-      
-      // First immediate application
-      applyNoteStyles();
-      
-      // Then a sequence of delayed applications to catch any race conditions
-      [50, 200, 500, 1000].forEach(delay => {
+      console.log('[Markdown Notes] Theme change detected via MutationObserver');
+      // Apply with delays to handle race conditions
+      [50, 200, 500].forEach(delay => {
         setTimeout(() => {
           applyNoteStyles();
-          console.log(`[Markdown Notes] Styles reapplied after ${delay}ms`);
         }, delay);
       });
     }
   });
-  
+
   // Observe changes to document element and body
   observer.observe(document.documentElement, {
     attributes: true,
@@ -114,39 +171,51 @@ function initializeNoteThemeSettings(api) {
     attributes: true,
     attributeFilter: ['class']
   });
-  
-  // Also apply when site settings change or page changes
+
+  // Listen for Discourse-specific theme events
   api.onPageChange(() => {
-    applyNoteStyles();
+    setTimeout(applyNoteStyles, 100);
   });
   
-  // Listen for color scheme changes
+  // Listen for system color scheme changes
   const colorSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
-  
-  // Use the appropriate event listener based on browser support
   try {
     colorSchemeMedia.addEventListener('change', () => {
-      applyNoteStyles();
-      console.log('[Markdown Notes] System color scheme changed (addEventListener)');
+      console.log('[Markdown Notes] System color scheme changed');
+      setTimeout(applyNoteStyles, 100);
     });
   } catch (e) {
     // Fallback for older browsers
     colorSchemeMedia.addListener(() => {
-      applyNoteStyles();
-      console.log('[Markdown Notes] System color scheme changed (addListener)');
+      console.log('[Markdown Notes] System color scheme changed (fallback)');
+      setTimeout(applyNoteStyles, 100);
     });
   }
   
-  // Force applying styles when discourse theme changes
-  api.onAppEvent('discourse-theme:changed', () => {
-    console.log('[Markdown Notes] Discourse theme changed event');
-    setTimeout(applyNoteStyles, 100);
+  // Listen for Discourse app events
+  if (api.onAppEvent) {
+    api.onAppEvent('theme:changed', () => {
+      console.log('[Markdown Notes] Discourse theme changed event');
+      setTimeout(applyNoteStyles, 100);
+    });
+    
+    api.onAppEvent('discourse-theme:changed', () => {
+      console.log('[Markdown Notes] Discourse theme changed event (legacy)');
+      setTimeout(applyNoteStyles, 100);
+    });
+  }
+  
+  // Apply styles when window gains focus (for external theme changes)
+  window.addEventListener('focus', () => {
+    setTimeout(applyNoteStyles, 200);
   });
   
-  // Apply styles when the window gains focus
-  window.addEventListener('focus', () => {
-    setTimeout(applyNoteStyles, 250);
-  });
+  // Apply styles when DOM is fully loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(applyNoteStyles, 300);
+    });
+  }
 }
 
 export default {

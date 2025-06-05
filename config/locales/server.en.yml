@@ -3,6 +3,7 @@
 en:
   site_settings:
     discourse_markdown_note_enabled: "Enable Markdown Notes plugin"
+    discourse_markdown_note_theme_mode: "Theme mode for notes"
     discourse_markdown_note_show_titles: "Show note titles"
     discourse_markdown_note_show_icons: "Show note icons"
     discourse_markdown_note_note_bg_light: "Regular note background (light theme)"

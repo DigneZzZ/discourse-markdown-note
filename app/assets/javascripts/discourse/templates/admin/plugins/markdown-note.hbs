@@ -6,8 +6,7 @@
   <div class="admin-content">
     <div class="markdown-note-settings">
       <p class="description">{{i18n "js.markdown_note.admin.description"}}</p>
-      
-      <div class="display-options">
+        <div class="display-options">
         <h3>{{i18n "js.markdown_note.admin.display_options"}}</h3>
         <div class="options-row">
           <label class="option-toggle">
@@ -23,6 +22,15 @@
                    {{action "toggleIcons"}}>
             {{i18n "js.markdown_note.admin.show_icons"}}
           </label>
+        </div>
+        
+        <div class="theme-mode-selector">
+          <h4>{{i18n "js.markdown_note.admin.theme_mode"}}</h4>
+          <select {{action "changeThemeMode" on="change"}}>
+            <option value="auto" selected={{eq themeMode "auto"}}>{{i18n "js.markdown_note.admin.theme_auto"}}</option>
+            <option value="light" selected={{eq themeMode "light"}}>{{i18n "js.markdown_note.admin.theme_light"}}</option>
+            <option value="dark" selected={{eq themeMode "dark"}}>{{i18n "js.markdown_note.admin.theme_dark"}}</option>
+          </select>
         </div>
       </div>
       

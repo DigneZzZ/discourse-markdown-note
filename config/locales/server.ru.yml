@@ -3,6 +3,7 @@
 ru:
   site_settings:
     discourse_markdown_note_enabled: "Включить плагин заметок Markdown"
+    discourse_markdown_note_theme_mode: "Режим темы для заметок"
     discourse_markdown_note_show_titles: "Показывать заголовки заметок"
     discourse_markdown_note_show_icons: "Показывать иконки заметок"
     discourse_markdown_note_note_bg_light: "Фон обычной заметки (светлая тема)"

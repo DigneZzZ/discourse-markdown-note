@@ -1,7 +1,8 @@
-// Base CSS variables for customizable note colors
-// CSS-based theme detection with light mode as default
+// Universal note styles that work with both light and dark themes
+// Uses CSS variables that can be overridden by JavaScript
+
 :root {
-  // Light theme values - the default
+  // Default light theme colors
   --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   --note-border-color: #6c757d;
   --note-text-color: #495057;
@@ -22,57 +23,54 @@
   --caution-text-color: #ad1457;
 }
 
-// Light theme selectors - explicit to override any dark settings with !important
-:root:not([data-theme="dark"]),
-:root:not(.discourse-dark),
-html[data-theme="light"],
-.light-theme,
-.discourse-light {
-  --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  --note-border-color: #6c757d !important;
-  --note-text-color: #495057 !important;
-  --info-bg-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
-  --info-border-color: #2196f3 !important;
-  --info-text-color: #1565c0 !important;
-  --warn-bg-color: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%) !important;
-  --warn-border-color: #ff9800 !important;
-  --warn-text-color: #e65100 !important;
-  --negative-bg-color: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%) !important;
-  --negative-border-color: #f44336 !important;
-  --negative-text-color: #c62828 !important;
-  --positive-bg-color: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%) !important;
-  --positive-border-color: #4caf50 !important;
-  --positive-text-color: #2e7d32 !important;
-  --caution-bg-color: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%) !important;
-  --caution-border-color: #e91e63 !important;
-  --caution-text-color: #ad1457 !important;
+// Override colors for dark theme automatically
+@media (prefers-color-scheme: dark) {
+  :root {
+    --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+    --note-text-color: #b0b0b0;
+    --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+    --info-text-color: #90caf9;
+    --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
+    --warn-text-color: #ffcc02;
+    --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%);
+    --negative-text-color: #ff8a80;
+    --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%);
+    --positive-text-color: #a5d6a7;
+    --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
+    --caution-text-color: #f48fb1;
+  }
 }
 
-// Dark theme selectors
-:root.discourse-dark,
-html[data-theme="dark"],
-body.dark-theme,
-.dark,
-.d-dark-mode,
-html[class*="color-scheme-dark"] {
-  --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%) !important;
-  --note-border-color: #6c757d !important;
-  --note-text-color: #b0b0b0 !important;
-  --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%) !important;
-  --info-border-color: #2196f3 !important;
-  --info-text-color: #90caf9 !important;
-  --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%) !important;
-  --warn-border-color: #ff9800 !important;
-  --warn-text-color: #ffcc02 !important;
-  --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%) !important;
-  --negative-border-color: #f44336 !important;
-  --negative-text-color: #ff8a80 !important;
-  --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%) !important;
-  --positive-border-color: #4caf50 !important;
-  --positive-text-color: #a5d6a7 !important;
-  --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%) !important;
-  --caution-border-color: #e91e63 !important;
-  --caution-text-color: #f48fb1 !important;
+// Manual dark theme class override (for user selection)
+body[data-note-theme="dark"] {
+  --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+  --note-text-color: #b0b0b0;
+  --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+  --info-text-color: #90caf9;
+  --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
+  --warn-text-color: #ffcc02;
+  --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%);
+  --negative-text-color: #ff8a80;
+  --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%);
+  --positive-text-color: #a5d6a7;
+  --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
+  --caution-text-color: #f48fb1;
+}
+
+// Manual light theme class override (for user selection)
+body[data-note-theme="light"] {
+  --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  --note-text-color: #495057;
+  --info-bg-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  --info-text-color: #1565c0;
+  --warn-bg-color: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  --warn-text-color: #e65100;
+  --negative-bg-color: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  --negative-text-color: #c62828;
+  --positive-bg-color: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  --positive-text-color: #2e7d32;
+  --caution-bg-color: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  --caution-text-color: #ad1457;
 }
 
 // Base notification styles
@@ -126,18 +124,18 @@ html[class*="color-scheme-dark"] {
   }
 }
 
-// Note type styles
+// Dynamic CSS variables support - these get overridden by JavaScript
 .p-notification--note {
-  background: var(--note-bg-color);
-  border-left: 4px solid var(--note-border-color);
+  background: var(--note-note-bg, var(--note-bg-color));
+  border-left: 4px solid var(--note-note-border, var(--note-border-color));
 }
 
 .p-notification--note .p-notification__response {
-  color: var(--note-text-color);
+  color: var(--note-note-text, var(--note-text-color));
 }
 
 .p-notification--note .p-notification__icon {
-  background: var(--note-border-color);
+  background: var(--note-note-border, var(--note-border-color));
 }
 
 .p-notification--note .p-notification__icon::before {
@@ -145,20 +143,20 @@ html[class*="color-scheme-dark"] {
 }
 
 .p-notification--note .p-notification__status {
-  color: var(--note-text-color);
+  color: var(--note-note-text, var(--note-text-color));
 }
 
 .p-notification--info {
-  background: var(--info-bg-color);
-  border-left: 4px solid var(--info-border-color);
+  background: var(--note-info-bg, var(--info-bg-color));
+  border-left: 4px solid var(--note-info-border, var(--info-border-color));
 }
 
 .p-notification--info .p-notification__response {
-  color: var(--info-text-color);
+  color: var(--note-info-text, var(--info-text-color));
 }
 
 .p-notification--info .p-notification__icon {
-  background: var(--info-border-color);
+  background: var(--note-info-border, var(--info-border-color));
 }
 
 .p-notification--info .p-notification__icon::before {
@@ -166,20 +164,20 @@ html[class*="color-scheme-dark"] {
 }
 
 .p-notification--info .p-notification__status {
-  color: var(--info-text-color);
+  color: var(--note-info-text, var(--info-text-color));
 }
 
 .p-notification--warn {
-  background: var(--warn-bg-color);
-  border-left: 4px solid var(--warn-border-color);
+  background: var(--note-warn-bg, var(--warn-bg-color));
+  border-left: 4px solid var(--note-warn-border, var(--warn-border-color));
 }
 
 .p-notification--warn .p-notification__response {
-  color: var(--warn-text-color);
+  color: var(--note-warn-text, var(--warn-text-color));
 }
 
 .p-notification--warn .p-notification__icon {
-  background: var(--warn-border-color);
+  background: var(--note-warn-border, var(--warn-border-color));
 }
 
 .p-notification--warn .p-notification__icon::before {
@@ -187,20 +185,20 @@ html[class*="color-scheme-dark"] {
 }
 
 .p-notification--warn .p-notification__status {
-  color: var(--warn-text-color);
+  color: var(--note-warn-text, var(--warn-text-color));
 }
 
 .p-notification--negative {
-  background: var(--negative-bg-color);
-  border-left: 4px solid var(--negative-border-color);
+  background: var(--note-negative-bg, var(--negative-bg-color));
+  border-left: 4px solid var(--note-negative-border, var(--negative-border-color));
 }
 
 .p-notification--negative .p-notification__response {
-  color: var(--negative-text-color);
+  color: var(--note-negative-text, var(--negative-text-color));
 }
 
 .p-notification--negative .p-notification__icon {
-  background: var(--negative-border-color);
+  background: var(--note-negative-border, var(--negative-border-color));
 }
 
 .p-notification--negative .p-notification__icon::before {
@@ -208,20 +206,20 @@ html[class*="color-scheme-dark"] {
 }
 
 .p-notification--negative .p-notification__status {
-  color: var(--negative-text-color);
+  color: var(--note-negative-text, var(--negative-text-color));
 }
 
 .p-notification--positive {
-  background: var(--positive-bg-color);
-  border-left: 4px solid var(--positive-border-color);
+  background: var(--note-positive-bg, var(--positive-bg-color));
+  border-left: 4px solid var(--note-positive-border, var(--positive-border-color));
 }
 
 .p-notification--positive .p-notification__response {
-  color: var(--positive-text-color);
+  color: var(--note-positive-text, var(--positive-text-color));
 }
 
 .p-notification--positive .p-notification__icon {
-  background: var(--positive-border-color);
+  background: var(--note-positive-border, var(--positive-border-color));
 }
 
 .p-notification--positive .p-notification__icon::before {
@@ -229,20 +227,20 @@ html[class*="color-scheme-dark"] {
 }
 
 .p-notification--positive .p-notification__status {
-  color: var(--positive-text-color);
+  color: var(--note-positive-text, var(--positive-text-color));
 }
 
 .p-notification--caution {
-  background: var(--caution-bg-color);
-  border-left: 4px solid var(--caution-border-color);
+  background: var(--note-caution-bg, var(--caution-bg-color));
+  border-left: 4px solid var(--note-caution-border, var(--caution-border-color));
 }
 
 .p-notification--caution .p-notification__response {
-  color: var(--caution-text-color);
+  color: var(--note-caution-text, var(--caution-text-color));
 }
 
 .p-notification--caution .p-notification__icon {
-  background: var(--caution-border-color);
+  background: var(--note-caution-border, var(--caution-border-color));
 }
 
 .p-notification--caution .p-notification__icon::before {
@@ -250,7 +248,7 @@ html[class*="color-scheme-dark"] {
 }
 
 .p-notification--caution .p-notification__status {
-  color: var(--caution-text-color);
+  color: var(--note-caution-text, var(--caution-text-color));
 }
 
 // Editor dropdown styles
