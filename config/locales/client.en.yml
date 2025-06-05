@@ -27,7 +27,7 @@ en:
         background_color: "Background Color"
         border_color: "Border Color"
         text_color: "Text Color"
-        preview: "Preview"        
+        preview: "Preview"
         save_settings: "Save Settings"
         reset_defaults: "Reset to Defaults"
         settings_saved: "Settings saved successfully!"
