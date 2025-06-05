@@ -2,23 +2,23 @@
 // Uses CSS variables that can be overridden by JavaScript
 
 :root {
-  // Default light theme colors
-  --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  // Default light theme colors with transparency
+  --note-bg-color: linear-gradient(135deg, rgba(248, 249, 250, 0.7) 0%, rgba(233, 236, 239, 0.8) 100%);
   --note-border-color: #6c757d;
   --note-text-color: #495057;
-  --info-bg-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  --info-bg-color: linear-gradient(135deg, rgba(227, 242, 253, 0.7) 0%, rgba(187, 222, 251, 0.8) 100%);
   --info-border-color: #2196f3;
   --info-text-color: #1565c0;
-  --warn-bg-color: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  --warn-bg-color: linear-gradient(135deg, rgba(255, 248, 225, 0.7) 0%, rgba(255, 236, 179, 0.8) 100%);
   --warn-border-color: #ff9800;
   --warn-text-color: #e65100;
-  --negative-bg-color: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  --negative-bg-color: linear-gradient(135deg, rgba(255, 235, 238, 0.7) 0%, rgba(255, 205, 210, 0.8) 100%);
   --negative-border-color: #f44336;
   --negative-text-color: #c62828;
-  --positive-bg-color: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  --positive-bg-color: linear-gradient(135deg, rgba(232, 245, 232, 0.7) 0%, rgba(200, 230, 201, 0.8) 100%);
   --positive-border-color: #4caf50;
   --positive-text-color: #2e7d32;
-  --caution-bg-color: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  --caution-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.7) 0%, rgba(248, 187, 217, 0.8) 100%);
   --caution-border-color: #e91e63;
   --caution-text-color: #ad1457;
 }
@@ -59,26 +59,65 @@ body[data-note-theme="dark"] {
 
 // Manual light theme class override (for user selection)
 body[data-note-theme="light"] {
-  --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  --note-bg-color: linear-gradient(135deg, rgba(248, 249, 250, 0.6) 0%, rgba(233, 236, 239, 0.75) 100%);
   --note-text-color: #495057;
-  --info-bg-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  --info-bg-color: linear-gradient(135deg, rgba(227, 242, 253, 0.6) 0%, rgba(187, 222, 251, 0.75) 100%);
   --info-text-color: #1565c0;
-  --warn-bg-color: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  --warn-bg-color: linear-gradient(135deg, rgba(255, 248, 225, 0.6) 0%, rgba(255, 236, 179, 0.75) 100%);
   --warn-text-color: #e65100;
-  --negative-bg-color: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  --negative-bg-color: linear-gradient(135deg, rgba(255, 235, 238, 0.6) 0%, rgba(255, 205, 210, 0.75) 100%);
   --negative-text-color: #c62828;
-  --positive-bg-color: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  --positive-bg-color: linear-gradient(135deg, rgba(232, 245, 232, 0.6) 0%, rgba(200, 230, 201, 0.75) 100%);
   --positive-text-color: #2e7d32;
-  --caution-bg-color: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  --caution-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.6) 0%, rgba(248, 187, 217, 0.75) 100%);
   --caution-text-color: #ad1457;
 }
+
+// Auto theme - adaptive transparency that works on any background
+body[data-note-theme="auto"],
+body:not([data-note-theme]) {
+  // Very subtle transparency that adapts to any theme
+  --note-bg-color: rgba(var(--primary-rgb), 0.04);
+  --note-border-color: rgba(var(--primary-rgb), 0.25);
+  --note-text-color: var(--primary);
+  
+  --info-bg-color: rgba(54, 162, 235, 0.08);
+  --info-border-color: rgba(54, 162, 235, 0.4);
+  --info-text-color: rgba(54, 142, 215, 0.9);
+  
+  --warn-bg-color: rgba(255, 193, 7, 0.08);
+  --warn-border-color: rgba(255, 193, 7, 0.4);
+  --warn-text-color: rgba(235, 173, 7, 0.9);
+  
+  --negative-bg-color: rgba(220, 53, 69, 0.08);
+  --negative-border-color: rgba(220, 53, 69, 0.4);
+  --negative-text-color: rgba(200, 33, 49, 0.9);
+  
+  --positive-bg-color: rgba(40, 167, 69, 0.08);
+  --positive-border-color: rgba(40, 167, 69, 0.4);
+  --positive-text-color: rgba(20, 147, 49, 0.9);
+  
+  --caution-bg-color: rgba(233, 30, 99, 0.08);
+  --caution-border-color: rgba(233, 30, 99, 0.4);
+  --caution-text-color: rgba(213, 10, 79, 0.9);
+}
+
+
 
 // Base notification styles
 .p-notification {
   margin-bottom: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  backdrop-filter: blur(2px); // Adds subtle blur effect for better transparency
+  -webkit-backdrop-filter: blur(2px); // Safari support
+}
+
+// Enhanced shadow for light theme transparency
+body[data-note-theme="light"] .p-notification,
+body:not([data-note-theme]) .p-notification {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .p-notification__response {
