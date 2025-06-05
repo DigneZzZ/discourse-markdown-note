@@ -2,6 +2,12 @@ discourse_markdown_note:
   discourse_markdown_note_enabled:
     default: true
     client: true
+  discourse_markdown_note_show_titles:
+    default: true
+    client: true
+  discourse_markdown_note_show_icons:
+    default: true
+    client: true
   discourse_markdown_note_note_bg_light:
     default: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
     client: true

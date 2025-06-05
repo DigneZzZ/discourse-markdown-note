@@ -21,6 +21,11 @@ export function setup(helper) {
     // Define all supported note types
     const noteTypes = ['note', 'info', 'warn', 'negative', 'positive', 'caution'];
     
+    // Get site settings for display options
+    const siteSettings = helper.getOption('siteSettings') || {};
+    const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
+    const showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
+    
     // Register each note type as a separate tag
     noteTypes.forEach(noteType => {
       md.block.bbcode.ruler.push(noteType, {
@@ -44,22 +49,26 @@ export function setup(helper) {
           state.push('div_open', 'div', 1).attrSet('class', notificationClass);
           state.push('div_open', 'div', 1).attrSet('class', 'p-notification__response');
           
-          // Add icon span
-          state.push('span_open', 'span', 1).attrSet('class', 'p-notification__icon');
-          state.push('span_close', 'span', -1);
+          // Add icon span if enabled
+          if (showIcons) {
+            state.push('span_open', 'span', 1).attrSet('class', 'p-notification__icon');
+            state.push('span_close', 'span', -1);
+          }
           
-          // Add status based on note type
-          state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
-          const statusText = {
-            'note': 'Заметка',
-            'info': 'Информация', 
-            'warn': 'Предупреждение',
-            'negative': 'Внимание',
-            'positive': 'Успех',
-            'caution': 'Осторожно'
-          };
-          state.push('text', '', 0).content = statusText[noteType] + ': ';
-          state.push('span_close', 'span', -1);
+          // Add status based on note type if enabled
+          if (showTitles) {
+            state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
+            const statusText = {
+              'note': 'Заметка',
+              'info': 'Информация', 
+              'warn': 'Предупреждение',
+              'negative': 'Внимание',
+              'positive': 'Успех',
+              'caution': 'Осторожно'
+            };
+            state.push('text', '', 0).content = statusText[noteType] + ': ';
+            state.push('span_close', 'span', -1);
+          }
 
           // Add the [note] content
           const tokens = state.md.parse(content, state.md);
@@ -81,9 +90,7 @@ export function setup(helper) {
 
           return true;
         }      });
-    });
-
-    // Support for legacy [note type=""] syntax
+    });    // Support for legacy [note type=""] syntax
     md.block.bbcode.ruler.push('note-legacy', {
       tag: 'note',
       replace: function(state, tagInfo, content) {
@@ -112,22 +119,26 @@ export function setup(helper) {
         state.push('div_open', 'div', 1).attrSet('class', notificationClass);
         state.push('div_open', 'div', 1).attrSet('class', 'p-notification__response');
         
-        // Add icon span
-        state.push('span_open', 'span', 1).attrSet('class', 'p-notification__icon');
-        state.push('span_close', 'span', -1);
+        // Add icon span if enabled
+        if (showIcons) {
+          state.push('span_open', 'span', 1).attrSet('class', 'p-notification__icon');
+          state.push('span_close', 'span', -1);
+        }
         
-        // Add status based on note type
-        state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
-        const statusText = {
-          'note': 'Заметка',
-          'info': 'Информация', 
-          'warn': 'Предупреждение',
-          'negative': 'Внимание',
-          'positive': 'Успех',
-          'caution': 'Осторожно'
-        };
-        state.push('text', '', 0).content = (statusText[mappedType] || 'Заметка') + ': ';
-        state.push('span_close', 'span', -1);
+        // Add status based on note type if enabled
+        if (showTitles) {
+          state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
+          const statusText = {
+            'note': 'Заметка',
+            'info': 'Информация', 
+            'warn': 'Предупреждение',
+            'negative': 'Внимание',
+            'positive': 'Успех',
+            'caution': 'Осторожно'
+          };
+          state.push('text', '', 0).content = (statusText[mappedType] || 'Заметка') + ': ';
+          state.push('span_close', 'span', -1);
+        }
 
         // Add the note content
         const tokens = state.md.parse(content, state.md);

@@ -6,6 +6,8 @@ en:
       site_settings:
         categories:
           discourse_markdown_note: "Markdown Notes"
+    plugins:
+      discourse_markdown_note: "Markdown Notes Settings"
   js:
     note:
       composer_title: "Notes"
@@ -15,11 +17,13 @@ en:
       negative_title: "Attention"
       positive_title: "Success"
       caution_title: "Caution"
-    
-    markdown_note:
+      markdown_note:
       admin:
         title: "Markdown Notes Settings"
         description: "Customize colors and appearance of different note types. Changes will apply to all new and existing notes."
+        display_options: "Display Options"
+        show_titles: "Show note type titles"
+        show_icons: "Show note icons"
         background_color: "Background Color"
         border_color: "Border Color"
         text_color: "Text Color"

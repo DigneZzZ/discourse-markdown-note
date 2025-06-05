@@ -58,6 +58,11 @@ body.dark-theme,
   margin: 0;
   border: none;
   color: var(--primary);
+  
+  // Adjust padding when icons are disabled
+  body.hide-note-icons & {
+    padding-left: 1rem;
+  }
 }
 
 .p-notification__icon {
@@ -73,11 +78,21 @@ body.dark-theme,
   font-weight: bold;
   font-size: 0.875rem;
   color: white;
+  
+  // Hide icons when disabled
+  body.hide-note-icons & {
+    display: none;
+  }
 }
 
 .p-notification__status {
   font-weight: 600;
   margin-right: 0.5rem;
+  
+  // Hide status titles when disabled
+  body.hide-note-titles & {
+    display: none;
+  }
 }
 
 // Note type styles

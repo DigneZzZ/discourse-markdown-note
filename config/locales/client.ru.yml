@@ -6,6 +6,8 @@ ru:
       site_settings:
         categories:
           discourse_markdown_note: "Заметки Markdown"
+    plugins:
+      discourse_markdown_note: "Настройки заметок Markdown"
   js:
     note:
       composer_title: "Заметки"
@@ -15,11 +17,13 @@ ru:
       negative_title: "Внимание"
       positive_title: "Успех"
       caution_title: "Осторожно"
-    
-    markdown_note:
+      markdown_note:
       admin:
         title: "Настройки заметок Markdown"
         description: "Настройте цвета и внешний вид различных типов заметок. Изменения применятся ко всем новым и существующим заметкам."
+        display_options: "Параметры отображения"
+        show_titles: "Показывать названия типов заметок"
+        show_icons: "Показывать иконки заметок"
         background_color: "Цвет фона"
         border_color: "Цвет границы"
         text_color: "Цвет текста"

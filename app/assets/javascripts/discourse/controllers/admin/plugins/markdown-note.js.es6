@@ -65,14 +65,30 @@ export default class AdminPluginsMarkdownNoteController extends Controller {
         caution_bg_dark: siteSettings.discourse_markdown_note_caution_bg_dark || 'linear-gradient(135deg, #331a26 0%, #472433 100%)',
         caution_border: siteSettings.discourse_markdown_note_caution_border || '#e91e63',
         caution_text_light: siteSettings.discourse_markdown_note_caution_text_light || '#ad1457',
-        caution_text_dark: siteSettings.discourse_markdown_note_caution_text_dark || '#f48fb1'
-      };
+        caution_text_dark: siteSettings.discourse_markdown_note_caution_text_dark || '#f48fb1'      };
+      
+      // Load display settings
+      this.showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
+      this.showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
       
       this.updatePreviewColors();
     } catch (error) {
       console.error('Ошибка загрузки настроек:', error);
     }
   }
+
+  @action
+  toggleTitles() {
+    this.showTitles = !this.showTitles;
+    this.updatePreviewDisplay();
+  }
+
+  @action
+  toggleIcons() {
+    this.showIcons = !this.showIcons;
+    this.updatePreviewDisplay();
+  }
+
   @action
   toggleTheme() {
     this.isDarkTheme = !this.isDarkTheme;
@@ -90,6 +106,26 @@ export default class AdminPluginsMarkdownNoteController extends Controller {
     };
     
     this.updatePreviewColors();
+  }
+  @action
+  updatePreviewDisplay() {
+    const previewContainer = document.querySelector('.markdown-note-settings');
+    
+    if (previewContainer) {
+      // Управление отображением заголовков
+      if (this.showTitles) {
+        previewContainer.classList.remove('hide-note-titles');
+      } else {
+        previewContainer.classList.add('hide-note-titles');
+      }
+      
+      // Управление отображением иконок
+      if (this.showIcons) {
+        previewContainer.classList.remove('hide-note-icons');
+      } else {
+        previewContainer.classList.add('hide-note-icons');
+      }
+    }
   }
 
   @action
@@ -109,13 +145,15 @@ export default class AdminPluginsMarkdownNoteController extends Controller {
         if (textColor) previewElement.style.setProperty('color', textColor);
       }
     });
-  }
-  @action
+    
+    // Также обновляем параметры отображения
+    this.updatePreviewDisplay();
+  }  @action
   async saveSettings() {
     this.saving = true;
     
     try {
-      // Сохраняем каждую настройку через Site Settings API
+      // Сохраняем каждую настройку цветов через Site Settings API
       const savePromises = Object.keys(this.noteSettings).map(key => {
         const settingName = `discourse_markdown_note_${key}`;
         return ajax(`/admin/site_settings/${settingName}`, {
@@ -123,6 +161,21 @@ export default class AdminPluginsMarkdownNoteController extends Controller {
           data: { [settingName]: this.noteSettings[key] }
         });
       });
+      
+      // Сохраняем настройки отображения
+      savePromises.push(
+        ajax('/admin/site_settings/discourse_markdown_note_show_titles', {
+          type: 'PUT',
+          data: { discourse_markdown_note_show_titles: this.showTitles }
+        })
+      );
+      
+      savePromises.push(
+        ajax('/admin/site_settings/discourse_markdown_note_show_icons', {
+          type: 'PUT',
+          data: { discourse_markdown_note_show_icons: this.showIcons }
+        })
+      );
       
       await Promise.all(savePromises);
       

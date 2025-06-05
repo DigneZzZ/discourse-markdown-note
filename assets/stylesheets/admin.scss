@@ -11,6 +11,42 @@
     line-height: 1.5;
   }
   
+  .display-options {
+    background: var(--primary-very-low);
+    border: 1px solid var(--primary-low);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    
+    h3 {
+      margin: 0 0 15px 0;
+      color: var(--primary);
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    .options-row {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .option-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      color: var(--primary);
+      cursor: pointer;
+      margin: 0;
+      
+      input[type="checkbox"] {
+        margin: 0;
+        transform: scale(1.1);
+      }
+    }
+  }
+  
   .theme-toggle {
     background: var(--primary-very-low);
     border: 1px solid var(--primary-low);
@@ -144,11 +180,19 @@
           flex-shrink: 0;
           line-height: 1;
         }
-        
-        .note-content {
+            .note-content {
           flex: 1;
           font-size: 14px;
           line-height: 1.5;
+        }
+        
+        // Скрыть заголовки и иконки в соответствии с настройками
+        .hide-note-titles & .note-title {
+          display: none;
+        }
+        
+        .hide-note-icons & .note-icon {
+          display: none;
         }
         
         // Специфичные стили для каждого типа заметки

@@ -1,7 +1,7 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 function initializeNoteThemeSettings(api) {
-  // Apply theme-based settings to CSS variables
+  // Apply theme-based settings to CSS variables and display options
   function applyNoteStyles() {
     const siteSettings = api.container.lookup("site-settings:main");
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
@@ -9,6 +9,13 @@ function initializeNoteThemeSettings(api) {
                    document.body.classList.contains('dark');
     
     const root = document.documentElement;
+    
+    // Apply display options
+    const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
+    const showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
+    
+    document.body.classList.toggle('hide-note-titles', !showTitles);
+    document.body.classList.toggle('hide-note-icons', !showIcons);
     
     // Helper function to set CSS variables
     function setCSSVar(name, lightSetting, darkSetting, borderSetting = null) {
