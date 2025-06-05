@@ -1,80 +1,76 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 function initializeNoteThemeSettings(api) {
-  // Detect theme status more reliably
+  // Simplified theme detection
   function isDarkTheme() {
     const theme = document.documentElement.getAttribute('data-theme');
-    const bodyClasses = document.body.className;
-    const schemePreference = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const discourseColorScheme = api.container.lookup('service:color-scheme');
     
-    // Debug checks
-    console.log('[Markdown Notes] Theme checks: ', {
-      'data-theme': theme,
-      'body-classes': bodyClasses.includes('dark-theme') || bodyClasses.includes('dark'),
-      'prefers-dark': schemePreference,
-      'discourse-scheme': discourseColorScheme && discourseColorScheme.isDark
-    });
-    
-    // Check multiple conditions to detect dark theme with priority
+    // Check based on simple data-theme attribute
     if (theme === 'dark') return true;
     if (theme === 'light') return false;
-    if (bodyClasses.includes('dark-theme') || bodyClasses.includes('dark')) return true;
-    if (discourseColorScheme && typeof discourseColorScheme.isDark === 'boolean') return discourseColorScheme.isDark;
-    return schemePreference;
+    
+    // Fallback to body class check
+    if (document.body.classList.contains('dark-theme') || 
+        document.body.classList.contains('dark')) {
+      return true;
+    }
+    
+    // Default to light theme
+    return false;
   }
-  
+
+  // Helper function to set CSS variables
+  function setCSSVar(type, lightBgSetting, darkBgSetting, borderSetting) {
+    try {
+      const siteSettings = api.container.lookup("site-settings:main");
+      const dark = isDarkTheme();
+      
+      // Get background colors
+      const lightBg = siteSettings[`discourse_markdown_note_${lightBgSetting}`] || '';
+      const darkBg = siteSettings[`discourse_markdown_note_${darkBgSetting}`] || '';
+      const borderColor = siteSettings[borderSetting] || '';
+      
+      // Apply appropriate background
+      const currentBg = dark ? darkBg : lightBg;
+      if (currentBg) {
+        document.documentElement.style.setProperty(`--note-${type}-bg`, currentBg);
+      }
+      
+      // Apply border color
+      if (borderColor) {
+        document.documentElement.style.setProperty(`--note-${type}-border`, borderColor);
+      }
+    } catch (e) {
+      console.error(`[Markdown Notes] Error setting CSS vars for ${type}:`, e);
+    }
+  }
+
   // Apply theme-based settings to CSS variables and display options
   function applyNoteStyles() {
-    const siteSettings = api.container.lookup("site-settings:main");
-    const dark = isDarkTheme();
-    
-    // First, make sure we have the right theme class on the root element
-    if (dark) {
-      document.documentElement.classList.add('discourse-dark');
-      document.documentElement.classList.remove('discourse-light');
-    } else {
-      document.documentElement.classList.add('discourse-light');
-      document.documentElement.classList.remove('discourse-dark');
-    }
-    
-    const root = document.documentElement;
-    
-    // Apply display options
-    const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
-    const showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
-    
-    document.body.classList.toggle('hide-note-titles', !showTitles);
-    document.body.classList.toggle('hide-note-icons', !showIcons);
-    
-    // Debug current theme status
-    console.log('[Markdown Notes] Theme: ' + (dark ? 'Dark' : 'Light'));
-    
-    // Helper function to set CSS variables - now with !important for both themes
-    function setCSSVar(name, lightSetting, darkSetting, borderSetting = null) {
-      const settingPrefix = 'discourse_markdown_note_';
-      const bgSuffix = dark ? '_bg_dark' : '_bg_light';
-      const textSuffix = dark ? '_text_dark' : '_text_light';
+    try {
+      const siteSettings = api.container.lookup("site-settings:main");
+      const dark = isDarkTheme();
       
-      const bgValue = siteSettings[settingPrefix + name + bgSuffix];
-      const textValue = siteSettings[settingPrefix + name + textSuffix];
-      const borderValue = borderSetting ? siteSettings[borderSetting] : null;
+      // Keep track of current theme with a data attribute
+      document.body.setAttribute('data-note-theme', dark ? 'dark' : 'light');
       
-      // Add !important to all styles for greater specificity
-      root.style.setProperty(`--${name}-bg-color`, bgValue + ' !important');
-      root.style.setProperty(`--${name}-text-color`, textValue + ' !important');
-      if (borderValue) {
-        root.style.setProperty(`--${name}-border-color`, borderValue + ' !important');
-      }
+      // Apply display options
+      const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
+      const showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
+      
+      document.body.classList.toggle('hide-note-titles', !showTitles);
+      document.body.classList.toggle('hide-note-icons', !showIcons);
+      
+      // Apply settings for each note type
+      setCSSVar('note', 'note_bg_light', 'note_bg_dark', 'discourse_markdown_note_note_border');
+      setCSSVar('info', 'info_bg_light', 'info_bg_dark', 'discourse_markdown_note_info_border');
+      setCSSVar('warn', 'warn_bg_light', 'warn_bg_dark', 'discourse_markdown_note_warn_border');
+      setCSSVar('negative', 'negative_bg_light', 'negative_bg_dark', 'discourse_markdown_note_negative_border');
+      setCSSVar('positive', 'positive_bg_light', 'positive_bg_dark', 'discourse_markdown_note_positive_border');
+      setCSSVar('caution', 'caution_bg_light', 'caution_bg_dark', 'discourse_markdown_note_caution_border');
+    } catch (e) {
+      console.error('[Markdown Notes] Error applying note styles:', e);
     }
-    
-    // Apply settings for each note type
-    setCSSVar('note', 'note_bg_light', 'note_bg_dark', 'discourse_markdown_note_note_border');
-    setCSSVar('info', 'info_bg_light', 'info_bg_dark', 'discourse_markdown_note_info_border');
-    setCSSVar('warn', 'warn_bg_light', 'warn_bg_dark', 'discourse_markdown_note_warn_border');
-    setCSSVar('negative', 'negative_bg_light', 'negative_bg_dark', 'discourse_markdown_note_negative_border');
-    setCSSVar('positive', 'positive_bg_light', 'positive_bg_dark', 'discourse_markdown_note_positive_border');
-    setCSSVar('caution', 'caution_bg_light', 'caution_bg_dark', 'discourse_markdown_note_caution_border');
   }
   
   // Apply styles on initialization
