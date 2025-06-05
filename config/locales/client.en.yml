@@ -6,8 +6,6 @@ en:
       site_settings:
         categories:
           discourse_markdown_note: "Markdown Notes"
-    plugins:
-      discourse_markdown_note: "Markdown Notes Settings"
   js:
     note:
       composer_title: "Notes"
@@ -17,41 +15,3 @@ en:
       negative_title: "Attention"
       positive_title: "Success"
       caution_title: "Caution"
-      markdown_note:
-      admin:
-        title: "Markdown Notes Settings"
-        description: "Customize colors and appearance of different note types. Changes will apply to all new and existing notes."
-        display_options: "Display Options"
-        show_titles: "Show note type titles"
-        show_icons: "Show note icons"
-        background_color: "Background Color"
-        border_color: "Border Color"
-        text_color: "Text Color"
-        preview: "Preview"
-        save_settings: "Save Settings"
-        reset_defaults: "Reset to Defaults"
-        settings_saved: "Settings saved successfully!"
-        theme_mode: "Theme Mode"
-        theme_options:
-          auto: "Auto (Follow System)"
-          light: "Light Theme"
-          dark: "Dark Theme"
-        types:
-          note:
-            title: "Regular Note"
-            preview: "This is an example of a regular note with basic information."
-          info:
-            title: "Information Note"
-            preview: "This is an informational note with useful details."
-          warn:
-            title: "Warning"
-            preview: "This is a warning about a potential issue."
-          negative:
-            title: "Negative Note"
-            preview: "This is a note about an error or problem."
-          positive:
-            title: "Positive Note"
-            preview: "This is a note about success or achievement."
-          caution:
-            title: "Caution"
-            preview: "This is a note requiring special attention."
