@@ -109,11 +109,32 @@ function initializeNoteThemeSettings(api) {  // Detect theme status more reliabl
   api.onPageChange(() => {
     applyNoteStyles();
   });
+    // Listen for color scheme changes
+  const colorSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
   
-  // Listen for color scheme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    applyNoteStyles();
-    console.log('[Markdown Notes] System color scheme changed');
+  // Use the appropriate event listener based on browser support
+  try {
+    colorSchemeMedia.addEventListener('change', () => {
+      applyNoteStyles();
+      console.log('[Markdown Notes] System color scheme changed (addEventListener)');
+    });
+  } catch (e) {
+    // Fallback for older browsers
+    colorSchemeMedia.addListener(() => {
+      applyNoteStyles();
+      console.log('[Markdown Notes] System color scheme changed (addListener)');
+    });
+  }
+  
+  // Force applying styles when discourse theme changes
+  api.onAppEvent('discourse-theme:changed', () => {
+    console.log('[Markdown Notes] Discourse theme changed event');
+    setTimeout(applyNoteStyles, 100);
+  });
+  
+  // Apply styles when the window gains focus
+  window.addEventListener('focus', () => {
+    setTimeout(applyNoteStyles, 250);
   });
 }
 
