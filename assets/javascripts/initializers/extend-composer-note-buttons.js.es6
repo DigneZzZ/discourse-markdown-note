@@ -7,36 +7,44 @@ function initializeNoteButtons(api) {
     toolbar.addButton({
       id: "insert-note",
       group: "fontStyles", // Put it with other formatting buttons
-      icon: "sticky-note",
+      icon: "far-sticky-note", // Use Font Awesome icon with prefix
       title: "note.composer_title",
       condition: () => true,
       perform: (e) => showNoteDropdown(e, toolbar)
     });
+    
+    // Debug log
+    console.log('[Markdown Notes] Note button added to toolbar');
   });
 }
 
 function showNoteDropdown(e, toolbar) {
+  // Debug log
+  console.log('[Markdown Notes] Opening note dropdown');
+  
   // Remove existing dropdown if any
   const existingDropdown = document.querySelector('.note-types-dropdown');
   if (existingDropdown) {
     existingDropdown.remove();
     return;
   }
-
+  
+  // Get I18n instance from Discourse
+  const I18n = require("I18n").default;
+  
   const noteTypes = [
-    { type: 'note', icon: 'sticky-note', title: 'Заметка', color: '#6c757d' },
-    { type: 'info', icon: 'info-circle', title: 'Информация', color: '#2196f3' },
-    { type: 'warn', icon: 'exclamation-triangle', title: 'Предупреждение', color: '#ff9800' },
-    { type: 'negative', icon: 'times-circle', title: 'Внимание', color: '#f44336' },
-    { type: 'positive', icon: 'check-circle', title: 'Успех', color: '#4caf50' },
-    { type: 'caution', icon: 'exclamation-circle', title: 'Осторожно', color: '#e91e63' }
+    { type: 'note', icon: 'far-sticky-note', title: I18n.t('note.note_title'), color: '#6c757d' },
+    { type: 'info', icon: 'far-info-circle', title: I18n.t('note.info_title'), color: '#2196f3' },
+    { type: 'warn', icon: 'far-exclamation-triangle', title: I18n.t('note.warn_title'), color: '#ff9800' },
+    { type: 'negative', icon: 'far-times-circle', title: I18n.t('note.negative_title'), color: '#f44336' },
+    { type: 'positive', icon: 'far-check-circle', title: I18n.t('note.positive_title'), color: '#4caf50' },
+    { type: 'caution', icon: 'far-exclamation-circle', title: I18n.t('note.caution_title'), color: '#e91e63' }
   ];
 
   // Create dropdown menu
   const dropdown = document.createElement('div');
-  dropdown.className = 'note-types-dropdown';
-  dropdown.style.cssText = `
-    position: fixed;
+  dropdown.className = 'note-types-dropdown';  dropdown.style.cssText = `
+    position: absolute;
     background: var(--secondary);
     border: 1px solid var(--primary-low);
     border-radius: 6px;
