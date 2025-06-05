@@ -1,46 +1,46 @@
-// Base CSS variables for customizable note colors
+// Base CSS variables for customizable note colors - default fallbacks
 :root {
-  --note-bg-color: #e8f4fd;
-  --note-border-color: #1f8ce6;
-  --note-text-color: #0c5aa6;
-  --info-bg-color: #fff8e1;
-  --info-border-color: #ff9800;
-  --info-text-color: #e65100;
-  --warn-bg-color: #fff3e0;
-  --warn-border-color: #ff5722;
-  --warn-text-color: #d84315;
-  --negative-bg-color: #ffebee;
+  --note-bg-color: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  --note-border-color: #6c757d;
+  --note-text-color: #495057;
+  --info-bg-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  --info-border-color: #2196f3;
+  --info-text-color: #1565c0;
+  --warn-bg-color: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  --warn-border-color: #ff9800;
+  --warn-text-color: #e65100;
+  --negative-bg-color: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
   --negative-border-color: #f44336;
   --negative-text-color: #c62828;
-  --positive-bg-color: #e8f5e8;
+  --positive-bg-color: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
   --positive-border-color: #4caf50;
   --positive-text-color: #2e7d32;
-  --caution-bg-color: #fce4ec;
+  --caution-bg-color: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
   --caution-border-color: #e91e63;
   --caution-text-color: #ad1457;
 }
 
-// Dark theme overrides
+// Dark theme fallback defaults - will be overridden by JavaScript
 html[data-theme="dark"],
 body.dark-theme,
 .dark {
-  --note-bg-color: #1a2332;
-  --note-border-color: #42a5f5;
-  --note-text-color: #90caf9;
-  --info-bg-color: #1a2332;
-  --info-border-color: #42a5f5;
+  --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+  --note-border-color: #6c757d;
+  --note-text-color: #b0b0b0;
+  --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+  --info-border-color: #2196f3;
   --info-text-color: #90caf9;
-  --warn-bg-color: #332b1a;
-  --warn-border-color: #ffb74d;
+  --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
+  --warn-border-color: #ff9800;
   --warn-text-color: #ffcc02;
-  --negative-bg-color: #331a1a;
-  --negative-border-color: #ef5350;
+  --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%);
+  --negative-border-color: #f44336;
   --negative-text-color: #ff8a80;
-  --positive-bg-color: #1a331a;
-  --positive-border-color: #66bb6a;
+  --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%);
+  --positive-border-color: #4caf50;
   --positive-text-color: #a5d6a7;
-  --caution-bg-color: #331a26;
-  --caution-border-color: #ec407a;
+  --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
+  --caution-border-color: #e91e63;
   --caution-text-color: #f48fb1;
 }
 

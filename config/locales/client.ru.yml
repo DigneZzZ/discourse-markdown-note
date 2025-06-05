@@ -1,6 +1,11 @@
 # Russian translations for note plugin
 
 ru:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_markdown_note: "Заметки Markdown"
   js:
     note:
       composer_title: "Заметки"

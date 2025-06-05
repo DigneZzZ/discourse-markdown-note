@@ -1,6 +1,6 @@
-# name: markdown-note
+# name: discourse-markdown-note
 # about: A BBCode Markdown extension for notes with full tag support, editor buttons, dark theme support and admin settings panel
-# version: 0.5.0
+# version: 0.6.0
 # authors: DigneZzZ
 # url: https://github.com/DigneZzZ/discourse-markdown-note
 
@@ -8,7 +8,7 @@ register_asset "stylesheets/notifications.scss"
 register_asset "stylesheets/admin.scss"
 
 # Define settings for the plugin
-enabled_site_setting :markdown_note_enabled
+enabled_site_setting :discourse_markdown_note_enabled
 
 after_initialize do
   # Load admin controller

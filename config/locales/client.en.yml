@@ -1,6 +1,11 @@
 # English translations for note plugin
 
 en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_markdown_note: "Markdown Notes"
   js:
     note:
       composer_title: "Notes"
