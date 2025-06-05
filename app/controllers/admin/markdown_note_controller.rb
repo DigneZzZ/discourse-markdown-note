@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class Admin::MarkdownNoteController < Admin::AdminController  def show
+class Admin::MarkdownNoteController < ::Admin::AdminController
+  def show
     @note_settings = {
       note_bg_color: SiteSetting.note_bg_color,
       note_border_color: SiteSetting.note_border_color,
@@ -19,8 +20,7 @@ class Admin::MarkdownNoteController < Admin::AdminController  def show
       positive_text_color: SiteSetting.positive_text_color,
       caution_bg_color: SiteSetting.caution_bg_color,
       caution_border_color: SiteSetting.caution_border_color,
-      caution_text_color: SiteSetting.caution_text_color,
-      discourse_markdown_note_theme_mode: SiteSetting.discourse_markdown_note_theme_mode
+      caution_text_color: SiteSetting.caution_text_color
     }
     
     render json: @note_settings
