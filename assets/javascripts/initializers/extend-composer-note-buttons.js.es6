@@ -9,7 +9,6 @@ function initializeNoteButtons(api) {
       group: "fontStyles", // Put it with other formatting buttons
       icon: "sticky-note",
       title: "note.composer_title",
-      label: "note.composer_title",
       condition: () => true,
       perform: (e) => showNoteDropdown(e, toolbar)
     });
@@ -17,6 +16,13 @@ function initializeNoteButtons(api) {
 }
 
 function showNoteDropdown(e, toolbar) {
+  // Remove existing dropdown if any
+  const existingDropdown = document.querySelector('.note-types-dropdown');
+  if (existingDropdown) {
+    existingDropdown.remove();
+    return;
+  }
+
   const noteTypes = [
     { type: 'note', icon: 'sticky-note', title: 'Заметка', color: '#6c757d' },
     { type: 'info', icon: 'info-circle', title: 'Информация', color: '#2196f3' },
@@ -25,26 +31,25 @@ function showNoteDropdown(e, toolbar) {
     { type: 'positive', icon: 'check-circle', title: 'Успех', color: '#4caf50' },
     { type: 'caution', icon: 'exclamation-circle', title: 'Осторожно', color: '#e91e63' }
   ];
+
   // Create dropdown menu
   const dropdown = document.createElement('div');
   dropdown.className = 'note-types-dropdown';
   dropdown.style.cssText = `
-    position: absolute;
-    top: 100%;
-    left: 0;
+    position: fixed;
     background: var(--secondary);
     border: 1px solid var(--primary-low);
     border-radius: 6px;
-    box-shadow: var(--shadow-dropdown);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 1000;
     min-width: 220px;
     padding: 8px 0;
-    margin-top: 4px;
   `;
 
   noteTypes.forEach(noteType => {
     const button = document.createElement('button');
-    button.className = 'note-type-button';    button.style.cssText = `
+    button.className = 'note-type-button';
+    button.style.cssText = `
       width: 100%;
       padding: 10px 16px;
       border: none;
@@ -80,11 +85,14 @@ function showNoteDropdown(e, toolbar) {
     dropdown.appendChild(button);
   });
 
-  // Position dropdown relative to button
-  const buttonElement = e.target.closest('.d-editor-button-bar button');
+  // Position dropdown below the button
+  const buttonElement = e.target.closest('button');
   if (buttonElement) {
-    buttonElement.style.position = 'relative';
-    buttonElement.appendChild(dropdown);
+    const rect = buttonElement.getBoundingClientRect();
+    dropdown.style.left = rect.left + 'px';
+    dropdown.style.top = (rect.bottom + 5) + 'px';
+    
+    document.body.appendChild(dropdown);
     
     // Close dropdown when clicking outside
     const closeDropdown = (event) => {
