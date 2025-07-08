@@ -216,21 +216,44 @@ body:not([data-note-theme]) .p-notification {
   }
 }
 
-// Global overrides for hiding icons and titles
+// More specific overrides for hiding icons and titles - only affect note notifications
 body.hide-note-icons {
-  .p-notification__icon,
-  .p-notification__icon::before {
+  .p-notification .p-notification__icon,
+  .p-notification .p-notification__icon::before,
+  .cooked .p-notification .p-notification__icon,
+  .cooked .p-notification .p-notification__icon::before {
     display: none !important;
   }
   
   // Adjust padding when icons are hidden
-  .p-notification__response {
+  .p-notification .p-notification__response,
+  .cooked .p-notification .p-notification__response {
     padding-left: 1rem !important;
   }
 }
 
 body.hide-note-titles {
-  .p-notification__status {
+  .p-notification .p-notification__status,
+  .cooked .p-notification .p-notification__status {
+    display: none !important;
+  }
+}
+
+// Ensure these styles don't affect admin interface
+body.hide-note-icons:not(.admin-interface) {
+  // Only apply to content areas, not admin
+  #main-outlet .p-notification .p-notification__icon,
+  .topic-body .p-notification .p-notification__icon,
+  .post-stream .p-notification .p-notification__icon {
+    display: none !important;
+  }
+}
+
+body.hide-note-titles:not(.admin-interface) {
+  // Only apply to content areas, not admin
+  #main-outlet .p-notification .p-notification__status,
+  .topic-body .p-notification .p-notification__status,
+  .post-stream .p-notification .p-notification__status {
     display: none !important;
   }
 }

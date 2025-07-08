@@ -1,6 +1,13 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-function initializeNoteThemeSettings(api) {  // Helper function to safely get site settings
+function initializeNoteThemeSettings(api) {
+  // Don't initialize on admin routes to avoid conflicts
+  if (window.location.pathname.startsWith('/admin')) {
+    console.log('[Markdown Notes] Skipping initialization on admin route');
+    return;
+  }
+  
+  // Helper function to safely get site settings
   function getSiteSettings() {
     try {
       return api.container.lookup("site-settings:main");
@@ -118,15 +125,22 @@ function initializeNoteThemeSettings(api) {  // Helper function to safely get si
       document.body.setAttribute('data-note-theme', theme);
       
       // Apply display options with more strict checking
-      const showTitles = siteSettings.discourse_markdown_note_show_titles === true;
-      const showIcons = siteSettings.discourse_markdown_note_show_icons === true;
+      // Convert to boolean explicitly to handle string values
+      const showTitles = siteSettings.discourse_markdown_note_show_titles;
+      const showIcons = siteSettings.discourse_markdown_note_show_icons;
       
-      console.log(`[Markdown Notes] Settings - showTitles: ${showTitles} (${siteSettings.discourse_markdown_note_show_titles}), showIcons: ${showIcons} (${siteSettings.discourse_markdown_note_show_icons})`);
+      // Check for both boolean false and string "false"
+      const hideTitles = showTitles === false || showTitles === 'false';
+      const hideIcons = showIcons === false || showIcons === 'false';
       
-      document.body.classList.toggle('hide-note-titles', !showTitles);
-      document.body.classList.toggle('hide-note-icons', !showIcons);
+      console.log(`[Markdown Notes] Raw Settings - showTitles: ${showTitles} (${typeof showTitles}), showIcons: ${showIcons} (${typeof showIcons})`);
+      console.log(`[Markdown Notes] Computed - hideTitles: ${hideTitles}, hideIcons: ${hideIcons}`);
       
-      console.log(`[Markdown Notes] Applied classes - hide-note-titles: ${!showTitles}, hide-note-icons: ${!showIcons}`);
+      document.body.classList.toggle('hide-note-titles', hideTitles);
+      document.body.classList.toggle('hide-note-icons', hideIcons);
+      
+      console.log(`[Markdown Notes] Applied classes - hide-note-titles: ${hideTitles}, hide-note-icons: ${hideIcons}`);
+      console.log(`[Markdown Notes] Body classes: ${document.body.className}`);
       
       // Apply settings for each note type
       setCSSVar('note', 'note_bg_light', 'note_bg_dark', 'discourse_markdown_note_note_border');
