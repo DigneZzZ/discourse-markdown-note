@@ -1,10 +1,27 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 function initializeNoteThemeSettings(api) {
-  // Don't initialize on admin routes to avoid conflicts
-  if (window.location.pathname.startsWith('/admin')) {
-    console.log('[Markdown Notes] Skipping initialization on admin route');
+  // More comprehensive admin route checking
+  const currentPath = window.location.pathname;
+  const isAdminRoute = currentPath.startsWith('/admin') || 
+                       currentPath.includes('/admin/') ||
+                       document.body.classList.contains('admin-interface') ||
+                       document.documentElement.classList.contains('admin-interface');
+  
+  if (isAdminRoute) {
+    console.log('[Markdown Notes] Skipping initialization on admin route:', currentPath);
     return;
+  }
+  
+  // Extra safety: also check if we're in admin context
+  try {
+    const adminController = api.container.lookup('controller:admin');
+    if (adminController) {
+      console.log('[Markdown Notes] Admin controller detected, skipping initialization');
+      return;
+    }
+  } catch (e) {
+    // Continue if admin controller not found
   }
   
   // Helper function to safely get site settings
@@ -118,6 +135,15 @@ function initializeNoteThemeSettings(api) {
   }  // Apply theme-based settings to CSS variables and display options
   function applyNoteStyles() {
     try {
+      // Double-check we're not in admin
+      const currentPath = window.location.pathname;
+      if (currentPath.startsWith('/admin') || 
+          document.body.classList.contains('admin-interface') ||
+          document.documentElement.classList.contains('admin-interface')) {
+        console.log('[Markdown Notes] Skipping style application on admin page');
+        return;
+      }
+      
       const siteSettings = getSiteSettings();
       const theme = getThemeMode();
       
@@ -136,11 +162,14 @@ function initializeNoteThemeSettings(api) {
       console.log(`[Markdown Notes] Raw Settings - showTitles: ${showTitles} (${typeof showTitles}), showIcons: ${showIcons} (${typeof showIcons})`);
       console.log(`[Markdown Notes] Computed - hideTitles: ${hideTitles}, hideIcons: ${hideIcons}`);
       
-      document.body.classList.toggle('hide-note-titles', hideTitles);
-      document.body.classList.toggle('hide-note-icons', hideIcons);
-      
-      console.log(`[Markdown Notes] Applied classes - hide-note-titles: ${hideTitles}, hide-note-icons: ${hideIcons}`);
-      console.log(`[Markdown Notes] Body classes: ${document.body.className}`);
+      // Only apply classes if not in admin
+      if (!document.body.classList.contains('admin-interface')) {
+        document.body.classList.toggle('hide-note-titles', hideTitles);
+        document.body.classList.toggle('hide-note-icons', hideIcons);
+        
+        console.log(`[Markdown Notes] Applied classes - hide-note-titles: ${hideTitles}, hide-note-icons: ${hideIcons}`);
+        console.log(`[Markdown Notes] Body classes: ${document.body.className}`);
+      }
       
       // Apply settings for each note type
       setCSSVar('note', 'note_bg_light', 'note_bg_dark', 'discourse_markdown_note_note_border');

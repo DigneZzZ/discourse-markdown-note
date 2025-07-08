@@ -157,8 +157,11 @@ body:not([data-note-theme]) {
 
 
 
-// Base notification styles
-.p-notification {
+// Base notification styles - only in content areas, not admin
+#main-outlet .p-notification,
+.topic-body .p-notification,
+.post-stream .p-notification,
+.cooked .p-notification {
   margin-bottom: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -168,12 +171,28 @@ body:not([data-note-theme]) {
 }
 
 // Enhanced shadow for light theme transparency
-body[data-note-theme="light"] .p-notification,
-body:not([data-note-theme]) .p-notification {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+body[data-note-theme="light"] {
+  #main-outlet .p-notification,
+  .topic-body .p-notification,
+  .post-stream .p-notification,
+  .cooked .p-notification {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
 }
 
-.p-notification__response {
+body:not([data-note-theme]) {
+  #main-outlet .p-notification,
+  .topic-body .p-notification,
+  .post-stream .p-notification,
+  .cooked .p-notification {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+}
+
+#main-outlet .p-notification__response,
+.topic-body .p-notification__response,
+.post-stream .p-notification__response,
+.cooked .p-notification__response {
   padding: 1rem 1rem 1rem 3.5rem;
   position: relative;
   margin: 0;
@@ -186,7 +205,10 @@ body:not([data-note-theme]) .p-notification {
   }
 }
 
-.p-notification__icon {
+#main-outlet .p-notification__icon,
+.topic-body .p-notification__icon,
+.post-stream .p-notification__icon,
+.cooked .p-notification__icon {
   position: absolute;
   left: 1rem;
   top: 1rem;
@@ -206,7 +228,10 @@ body:not([data-note-theme]) .p-notification {
   }
 }
 
-.p-notification__status {
+#main-outlet .p-notification__status,
+.topic-body .p-notification__status,
+.post-stream .p-notification__status,
+.cooked .p-notification__status {
   font-weight: 600;
   margin-right: 0.5rem;
   
@@ -216,45 +241,37 @@ body:not([data-note-theme]) .p-notification {
   }
 }
 
-// More specific overrides for hiding icons and titles - only affect note notifications
-body.hide-note-icons {
-  .p-notification .p-notification__icon,
-  .p-notification .p-notification__icon::before,
-  .cooked .p-notification .p-notification__icon,
-  .cooked .p-notification .p-notification__icon::before {
-    display: none !important;
+// Very specific overrides for hiding icons and titles - ONLY for post content
+// Exclude admin interface completely
+body:not(.admin-interface):not([class*="admin"]) {
+  &.hide-note-icons {
+    #main-outlet .p-notification .p-notification__icon,
+    #main-outlet .p-notification .p-notification__icon::before,
+    .topic-body .p-notification .p-notification__icon,
+    .topic-body .p-notification .p-notification__icon::before,
+    .post-stream .p-notification .p-notification__icon,
+    .post-stream .p-notification .p-notification__icon::before,
+    .cooked .p-notification .p-notification__icon,
+    .cooked .p-notification .p-notification__icon::before {
+      display: none !important;
+    }
+    
+    // Adjust padding when icons are hidden
+    #main-outlet .p-notification .p-notification__response,
+    .topic-body .p-notification .p-notification__response,
+    .post-stream .p-notification .p-notification__response,
+    .cooked .p-notification .p-notification__response {
+      padding-left: 1rem !important;
+    }
   }
-  
-  // Adjust padding when icons are hidden
-  .p-notification .p-notification__response,
-  .cooked .p-notification .p-notification__response {
-    padding-left: 1rem !important;
-  }
-}
 
-body.hide-note-titles {
-  .p-notification .p-notification__status,
-  .cooked .p-notification .p-notification__status {
-    display: none !important;
-  }
-}
-
-// Ensure these styles don't affect admin interface
-body.hide-note-icons:not(.admin-interface) {
-  // Only apply to content areas, not admin
-  #main-outlet .p-notification .p-notification__icon,
-  .topic-body .p-notification .p-notification__icon,
-  .post-stream .p-notification .p-notification__icon {
-    display: none !important;
-  }
-}
-
-body.hide-note-titles:not(.admin-interface) {
-  // Only apply to content areas, not admin
-  #main-outlet .p-notification .p-notification__status,
-  .topic-body .p-notification .p-notification__status,
-  .post-stream .p-notification .p-notification__status {
-    display: none !important;
+  &.hide-note-titles {
+    #main-outlet .p-notification .p-notification__status,
+    .topic-body .p-notification .p-notification__status,
+    .post-stream .p-notification .p-notification__status,
+    .cooked .p-notification .p-notification__status {
+      display: none !important;
+    }
   }
 }
 
