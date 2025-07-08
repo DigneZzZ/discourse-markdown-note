@@ -131,6 +131,9 @@ function initializeNoteThemeSettings(api) {  // Helper function to safely get si
       setCSSVar('negative', 'negative_bg_light', 'negative_bg_dark', 'discourse_markdown_note_negative_border');
       setCSSVar('positive', 'positive_bg_light', 'positive_bg_dark', 'discourse_markdown_note_positive_border');
       setCSSVar('caution', 'caution_bg_light', 'caution_bg_dark', 'discourse_markdown_note_caution_border');
+      setCSSVar('attention', 'attention_bg_light', 'attention_bg_dark', 'discourse_markdown_note_attention_border');
+      setCSSVar('security', 'security_bg_light', 'security_bg_dark', 'discourse_markdown_note_security_border');
+      setCSSVar('tip', 'tip_bg_light', 'tip_bg_dark', 'discourse_markdown_note_tip_border');
       
       console.log(`[Markdown Notes] Applied ${theme} theme styles (Dark: ${isDarkTheme()})`);
     } catch (e) {

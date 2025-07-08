@@ -8,10 +8,11 @@ export function setup(helper) {
     'div.p-notification--note',
     'div.p-notification--info',
     'div.p-notification--warn',
-    'div.p-notification--negative',
-    'div.p-notification--positive',
-    'div.p-notification--caution',
+    'div.p-notification--error',
+    'div.p-notification--success',
     'div.p-notification--important',
+    'div.p-notification--security',
+    'div.p-notification--question',
     'div.p-notification__response',
     'span.p-notification__status',
     'span.p-notification__icon'
@@ -19,7 +20,7 @@ export function setup(helper) {
 
   helper.registerPlugin(md => {
     // Define all supported note types
-    const noteTypes = ['note', 'info', 'warn', 'negative', 'positive', 'caution'];
+    const noteTypes = ['note', 'info', 'warn', 'error', 'success', 'important', 'security', 'question'];
       // Get site settings for display options
     let siteSettings = {};
     let showTitles = true;
@@ -43,9 +44,11 @@ export function setup(helper) {
             'note': 'note',
             'info': 'info', 
             'warn': 'warn',
-            'negative': 'negative',
-            'positive': 'positive',
-            'caution': 'caution'
+            'error': 'error',
+            'success': 'success',
+            'important': 'important',
+            'security': 'security',
+            'question': 'question'
           };
           
           let notificationClass = 'p-notification--' + typeMapping[noteType];
@@ -69,9 +72,11 @@ export function setup(helper) {
               'note': 'Заметка',
               'info': 'Информация', 
               'warn': 'Предупреждение',
-              'negative': 'Внимание',
-              'positive': 'Успех',
-              'caution': 'Осторожно'
+              'error': 'Ошибка',
+              'success': 'Успех',
+              'important': 'Важно',
+              'security': 'Безопасность',
+              'question': 'Вопрос'
             };
             state.push('text', '', 0).content = statusText[noteType] + ': ';
             state.push('span_close', 'span', -1);
@@ -111,15 +116,19 @@ export function setup(helper) {
         // Map legacy type names to new format
         const legacyMapping = {
           'info': 'info',
+          'tip': 'info', // tip is now a synonym for info
           'warn': 'warn', 
           'warning': 'warn',
-          'error': 'negative',
-          'negative': 'negative',
-          'success': 'positive',
-          'positive': 'positive',
-          'danger': 'negative',
-          'important': 'caution',
-          'caution': 'caution'
+          'error': 'error',
+          'negative': 'error', // renamed negative to error
+          'success': 'success',
+          'positive': 'success', // renamed positive to success
+          'danger': 'error',
+          'important': 'important',
+          'caution': 'important', // renamed caution to important
+          'attention': 'important', // attention maps to important
+          'security': 'security',
+          'question': 'question'
         };
 
         const mappedType = legacyMapping[noteType] || 'note';
@@ -143,9 +152,11 @@ export function setup(helper) {
             'note': 'Заметка',
             'info': 'Информация', 
             'warn': 'Предупреждение',
-            'negative': 'Внимание',
-            'positive': 'Успех',
-            'caution': 'Осторожно'
+            'error': 'Ошибка',
+            'success': 'Успех',
+            'important': 'Важно',
+            'security': 'Безопасность',
+            'question': 'Вопрос'
           };
           state.push('text', '', 0).content = (statusText[mappedType] || 'Заметка') + ': ';
           state.push('span_close', 'span', -1);
