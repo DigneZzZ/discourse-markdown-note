@@ -1,0 +1,378 @@
+// Universal note styles that work with both light and dark themes
+// Uses CSS variables that can be overridden by JavaScript
+
+:root {
+  // Default light theme colors with transparency
+  --note-bg-color: linear-gradient(135deg, rgba(248, 249, 250, 0.7) 0%, rgba(233, 236, 239, 0.8) 100%);
+  --note-border-color: #6c757d;
+  --note-text-color: #495057;
+  --info-bg-color: linear-gradient(135deg, rgba(227, 242, 253, 0.7) 0%, rgba(187, 222, 251, 0.8) 100%);
+  --info-border-color: #2196f3;
+  --info-text-color: #1565c0;
+  --warn-bg-color: linear-gradient(135deg, rgba(255, 248, 225, 0.7) 0%, rgba(255, 236, 179, 0.8) 100%);
+  --warn-border-color: #ff9800;
+  --warn-text-color: #e65100;
+  --negative-bg-color: linear-gradient(135deg, rgba(255, 235, 238, 0.7) 0%, rgba(255, 205, 210, 0.8) 100%);
+  --negative-border-color: #f44336;
+  --negative-text-color: #c62828;
+  --positive-bg-color: linear-gradient(135deg, rgba(232, 245, 232, 0.7) 0%, rgba(200, 230, 201, 0.8) 100%);
+  --positive-border-color: #4caf50;
+  --positive-text-color: #2e7d32;
+  --caution-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.7) 0%, rgba(248, 187, 217, 0.8) 100%);
+  --caution-border-color: #e91e63;
+  --caution-text-color: #ad1457;
+}
+
+// Override colors for dark theme automatically
+@media (prefers-color-scheme: dark) {
+  :root {
+    --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+    --note-text-color: #b0b0b0;
+    --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+    --info-text-color: #90caf9;
+    --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
+    --warn-text-color: #ffcc02;
+    --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%);
+    --negative-text-color: #ff8a80;
+    --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%);
+    --positive-text-color: #a5d6a7;
+    --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
+    --caution-text-color: #f48fb1;
+  }
+}
+
+// Manual dark theme class override (for user selection)
+body[data-note-theme="dark"] {
+  --note-bg-color: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+  --note-text-color: #b0b0b0;
+  --info-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+  --info-text-color: #90caf9;
+  --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
+  --warn-text-color: #ffcc02;
+  --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%);
+  --negative-text-color: #ff8a80;
+  --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%);
+  --positive-text-color: #a5d6a7;
+  --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
+  --caution-text-color: #f48fb1;
+}
+
+// Manual light theme class override (for user selection)
+body[data-note-theme="light"] {
+  --note-bg-color: linear-gradient(135deg, rgba(248, 249, 250, 0.6) 0%, rgba(233, 236, 239, 0.75) 100%);
+  --note-text-color: #495057;
+  --info-bg-color: linear-gradient(135deg, rgba(227, 242, 253, 0.6) 0%, rgba(187, 222, 251, 0.75) 100%);
+  --info-text-color: #1565c0;
+  --warn-bg-color: linear-gradient(135deg, rgba(255, 248, 225, 0.6) 0%, rgba(255, 236, 179, 0.75) 100%);
+  --warn-text-color: #e65100;
+  --negative-bg-color: linear-gradient(135deg, rgba(255, 235, 238, 0.6) 0%, rgba(255, 205, 210, 0.75) 100%);
+  --negative-text-color: #c62828;
+  --positive-bg-color: linear-gradient(135deg, rgba(232, 245, 232, 0.6) 0%, rgba(200, 230, 201, 0.75) 100%);
+  --positive-text-color: #2e7d32;
+  --caution-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.6) 0%, rgba(248, 187, 217, 0.75) 100%);
+  --caution-text-color: #ad1457;
+}
+
+// Auto theme - adaptive transparency that works on any background
+body[data-note-theme="auto"],
+body:not([data-note-theme]) {
+  // Very subtle transparency that adapts to any theme
+  --note-bg-color: rgba(var(--primary-rgb), 0.04);
+  --note-border-color: rgba(var(--primary-rgb), 0.25);
+  --note-text-color: var(--primary);
+  
+  --info-bg-color: rgba(54, 162, 235, 0.08);
+  --info-border-color: rgba(54, 162, 235, 0.4);
+  --info-text-color: rgba(54, 142, 215, 0.9);
+  
+  --warn-bg-color: rgba(255, 193, 7, 0.08);
+  --warn-border-color: rgba(255, 193, 7, 0.4);
+  --warn-text-color: rgba(235, 173, 7, 0.9);
+  
+  --negative-bg-color: rgba(220, 53, 69, 0.08);
+  --negative-border-color: rgba(220, 53, 69, 0.4);
+  --negative-text-color: rgba(200, 33, 49, 0.9);
+  
+  --positive-bg-color: rgba(40, 167, 69, 0.08);
+  --positive-border-color: rgba(40, 167, 69, 0.4);
+  --positive-text-color: rgba(20, 147, 49, 0.9);
+  
+  --caution-bg-color: rgba(233, 30, 99, 0.08);
+  --caution-border-color: rgba(233, 30, 99, 0.4);
+  --caution-text-color: rgba(213, 10, 79, 0.9);
+}
+
+
+
+// Base notification styles
+.p-notification {
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  backdrop-filter: blur(2px); // Adds subtle blur effect for better transparency
+  -webkit-backdrop-filter: blur(2px); // Safari support
+}
+
+// Enhanced shadow for light theme transparency
+body[data-note-theme="light"] .p-notification,
+body:not([data-note-theme]) .p-notification {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.p-notification__response {
+  padding: 1rem 1rem 1rem 3.5rem;
+  position: relative;
+  margin: 0;
+  border: none;
+  color: var(--primary);
+  
+  // Adjust padding when icons are disabled
+  body.hide-note-icons & {
+    padding-left: 1rem;
+  }
+}
+
+.p-notification__icon {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.875rem;
+  color: white;
+  
+  // Hide icons when disabled
+  body.hide-note-icons & {
+    display: none;
+  }
+}
+
+.p-notification__status {
+  font-weight: 600;
+  margin-right: 0.5rem;
+  
+  // Hide status titles when disabled
+  body.hide-note-titles & {
+    display: none;
+  }
+}
+
+// Dynamic CSS variables support - these get overridden by JavaScript
+.p-notification--note {
+  background: var(--note-note-bg, var(--note-bg-color));
+  border-left: 4px solid var(--note-note-border, var(--note-border-color));
+}
+
+.p-notification--note .p-notification__response {
+  color: var(--note-note-text, var(--note-text-color));
+}
+
+.p-notification--note .p-notification__icon {
+  background: var(--note-note-border, var(--note-border-color));
+}
+
+.p-notification--note .p-notification__icon::before {
+  content: "📝";
+}
+
+.p-notification--note .p-notification__status {
+  color: var(--note-note-text, var(--note-text-color));
+}
+
+.p-notification--info {
+  background: var(--note-info-bg, var(--info-bg-color));
+  border-left: 4px solid var(--note-info-border, var(--info-border-color));
+}
+
+.p-notification--info .p-notification__response {
+  color: var(--note-info-text, var(--info-text-color));
+}
+
+.p-notification--info .p-notification__icon {
+  background: var(--note-info-border, var(--info-border-color));
+}
+
+.p-notification--info .p-notification__icon::before {
+  content: "💡";
+}
+
+.p-notification--info .p-notification__status {
+  color: var(--note-info-text, var(--info-text-color));
+}
+
+.p-notification--warn {
+  background: var(--note-warn-bg, var(--warn-bg-color));
+  border-left: 4px solid var(--note-warn-border, var(--warn-border-color));
+}
+
+.p-notification--warn .p-notification__response {
+  color: var(--note-warn-text, var(--warn-text-color));
+}
+
+.p-notification--warn .p-notification__icon {
+  background: var(--note-warn-border, var(--warn-border-color));
+}
+
+.p-notification--warn .p-notification__icon::before {
+  content: "⚠️";
+}
+
+.p-notification--warn .p-notification__status {
+  color: var(--note-warn-text, var(--warn-text-color));
+}
+
+.p-notification--negative {
+  background: var(--note-negative-bg, var(--negative-bg-color));
+  border-left: 4px solid var(--note-negative-border, var(--negative-border-color));
+}
+
+.p-notification--negative .p-notification__response {
+  color: var(--note-negative-text, var(--negative-text-color));
+}
+
+.p-notification--negative .p-notification__icon {
+  background: var(--note-negative-border, var(--negative-border-color));
+}
+
+.p-notification--negative .p-notification__icon::before {
+  content: "❌";
+}
+
+.p-notification--negative .p-notification__status {
+  color: var(--note-negative-text, var(--negative-text-color));
+}
+
+.p-notification--positive {
+  background: var(--note-positive-bg, var(--positive-bg-color));
+  border-left: 4px solid var(--note-positive-border, var(--positive-border-color));
+}
+
+.p-notification--positive .p-notification__response {
+  color: var(--note-positive-text, var(--positive-text-color));
+}
+
+.p-notification--positive .p-notification__icon {
+  background: var(--note-positive-border, var(--positive-border-color));
+}
+
+.p-notification--positive .p-notification__icon::before {
+  content: "✅";
+}
+
+.p-notification--positive .p-notification__status {
+  color: var(--note-positive-text, var(--positive-text-color));
+}
+
+.p-notification--caution {
+  background: var(--note-caution-bg, var(--caution-bg-color));
+  border-left: 4px solid var(--note-caution-border, var(--caution-border-color));
+}
+
+.p-notification--caution .p-notification__response {
+  color: var(--note-caution-text, var(--caution-text-color));
+}
+
+.p-notification--caution .p-notification__icon {
+  background: var(--note-caution-border, var(--caution-border-color));
+}
+
+.p-notification--caution .p-notification__icon::before {
+  content: "🚨";
+}
+
+.p-notification--caution .p-notification__status {
+  color: var(--note-caution-text, var(--caution-text-color));
+}
+
+// Editor dropdown styles
+.note-types-dropdown {
+  background: var(--secondary);
+  border: 1px solid var(--primary-low);
+  border-radius: 6px;
+  padding: 4px 0;
+  min-width: 200px;
+  position: fixed;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.note-type-button {
+  color: var(--primary);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.note-type-button:hover {
+  background-color: var(--primary-very-low);
+}
+
+.note-type-button .note-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+// Dark theme adjustments
+html[data-theme="dark"] .p-notification,
+body.dark-theme .p-notification,
+.dark .p-notification {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .note-types-dropdown,
+body.dark-theme .note-types-dropdown,
+.dark .note-types-dropdown {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+// Composer button styles
+.d-editor-button-bar button[data-id="insert-note"]:hover {
+  background-color: var(--primary-very-low);
+}
+
+.d-editor-button-bar button[data-id="insert-note"].active {
+  background-color: var(--primary-low);
+  color: var(--primary);
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .p-notification {
+    margin-bottom: 1rem;
+  }
+  
+  .p-notification__response {
+    padding: 0.75rem 0.75rem 0.75rem 3rem;
+  }
+  
+  .p-notification__icon {
+    left: 0.75rem;
+    top: 0.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 0.75rem;
+  }
+  
+  .note-types-dropdown {
+    min-width: 180px;
+  }
+  
+  .note-type-button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}

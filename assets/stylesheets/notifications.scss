@@ -695,3 +695,51 @@ body.hide-note-icons .p-notification,
 body.hide-note-titles .p-notification {
   position: relative;
 }
+
+/* Override hide rules for ALL note types including new ones */
+body.hide-note-icons {
+  .p-notification--note .p-notification__icon,
+  .p-notification--info .p-notification__icon,
+  .p-notification--warn .p-notification__icon,
+  .p-notification--negative .p-notification__icon,
+  .p-notification--positive .p-notification__icon,
+  .p-notification--caution .p-notification__icon,
+  .p-notification--tip .p-notification__icon,
+  .p-notification--todo .p-notification__icon,
+  .p-notification--bug .p-notification__icon,
+  .p-notification--feature .p-notification__icon,
+  .p-notification--security .p-notification__icon {
+    display: none !important;
+  }
+  
+  /* Adjust padding for all note types */
+  .p-notification--note .p-notification__response,
+  .p-notification--info .p-notification__response,
+  .p-notification--warn .p-notification__response,
+  .p-notification--negative .p-notification__response,
+  .p-notification--positive .p-notification__response,
+  .p-notification--caution .p-notification__response,
+  .p-notification--tip .p-notification__response,
+  .p-notification--todo .p-notification__response,
+  .p-notification--bug .p-notification__response,
+  .p-notification--feature .p-notification__response,
+  .p-notification--security .p-notification__response {
+    padding-left: 1rem !important;
+  }
+}
+
+body.hide-note-titles {
+  .p-notification--note .p-notification__status,
+  .p-notification--info .p-notification__status,
+  .p-notification--warn .p-notification__status,
+  .p-notification--negative .p-notification__status,
+  .p-notification--positive .p-notification__status,
+  .p-notification--caution .p-notification__status,
+  .p-notification--tip .p-notification__status,
+  .p-notification--todo .p-notification__status,
+  .p-notification--bug .p-notification__status,
+  .p-notification--feature .p-notification__status,
+  .p-notification--security .p-notification__status {
+    display: none !important;
+  }
+}
