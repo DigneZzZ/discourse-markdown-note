@@ -195,6 +195,15 @@ function initializeNoteThemeSettings(api) {
   let styleUpdateTimeout = null;
   
   function scheduleStyleUpdate() {
+    // Double-check we're not in admin before scheduling
+    const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/admin') || 
+        document.body.classList.contains('admin-interface') ||
+        document.documentElement.classList.contains('admin-interface')) {
+      console.log('[Markdown Notes] Skipping scheduled update - in admin');
+      return;
+    }
+    
     if (styleUpdateTimeout) {
       clearTimeout(styleUpdateTimeout);
     }
@@ -205,6 +214,14 @@ function initializeNoteThemeSettings(api) {
   }
 
   const observer = new MutationObserver(function(mutations) {
+    // Skip if in admin
+    const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/admin') || 
+        document.body.classList.contains('admin-interface') ||
+        document.documentElement.classList.contains('admin-interface')) {
+      return;
+    }
+    
     let shouldApplyStyles = false;
     
     mutations.forEach(function(mutation) {
@@ -238,46 +255,68 @@ function initializeNoteThemeSettings(api) {
   });
   // Listen for Discourse-specific theme events
   api.onPageChange(() => {
-    scheduleStyleUpdate();
+    // Skip if navigated to admin
+    const currentPath = window.location.pathname;
+    if (!currentPath.startsWith('/admin')) {
+      scheduleStyleUpdate();
+    }
   });
   
   // Listen for system color scheme changes
   const colorSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
   try {
     colorSchemeMedia.addEventListener('change', () => {
-      console.log('[Markdown Notes] System color scheme changed');
-      scheduleStyleUpdate();
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/admin')) {
+        console.log('[Markdown Notes] System color scheme changed');
+        scheduleStyleUpdate();
+      }
     });
   } catch (e) {
     // Fallback for older browsers
     colorSchemeMedia.addListener(() => {
-      console.log('[Markdown Notes] System color scheme changed (fallback)');
-      scheduleStyleUpdate();
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/admin')) {
+        console.log('[Markdown Notes] System color scheme changed (fallback)');
+        scheduleStyleUpdate();
+      }
     });
   }
   
   // Listen for Discourse app events
   if (api.onAppEvent) {
     api.onAppEvent('theme:changed', () => {
-      console.log('[Markdown Notes] Discourse theme changed event');
-      scheduleStyleUpdate();
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/admin')) {
+        console.log('[Markdown Notes] Discourse theme changed event');
+        scheduleStyleUpdate();
+      }
     });
     
     api.onAppEvent('discourse-theme:changed', () => {
-      console.log('[Markdown Notes] Discourse theme changed event (legacy)');
-      scheduleStyleUpdate();
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/admin')) {
+        console.log('[Markdown Notes] Discourse theme changed event (legacy)');
+        scheduleStyleUpdate();
+      }
     });
   }
   
   // Apply styles when window gains focus (for external theme changes)
   window.addEventListener('focus', () => {
-    scheduleStyleUpdate();
+    const currentPath = window.location.pathname;
+    if (!currentPath.startsWith('/admin')) {
+      scheduleStyleUpdate();
+    }
   });
   
   // Apply styles when DOM is fully loaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      scheduleStyleUpdate();
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/admin')) {
+        scheduleStyleUpdate();
+      }
     });
   }
 }

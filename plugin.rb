@@ -1,6 +1,6 @@
 # name: discourse-markdown-note
 # about: A BBCode Markdown extension for notes with full tag support, dark theme support and customizable styling
-# version: 0.8.3
+# version: 0.8.4
 # authors: DigneZzZ
 # url: https://github.com/DigneZzZ/discourse-markdown-note
 
