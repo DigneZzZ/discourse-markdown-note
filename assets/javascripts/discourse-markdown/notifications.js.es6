@@ -19,8 +19,8 @@ export function setup(helper) {
   ]);
 
   helper.registerPlugin(md => {
-    // Define all supported note types
-    const noteTypes = ['note', 'info', 'warn', 'error', 'success', 'important', 'security', 'question'];
+    // Define all supported note types (including legacy types)
+    const noteTypes = ['note', 'info', 'warn', 'error', 'success', 'important', 'security', 'question', 'negative', 'positive', 'caution', 'attention', 'tip'];
       // Get site settings for display options
     let siteSettings = {};
     let showTitles = true;
@@ -39,7 +39,7 @@ export function setup(helper) {
       md.block.bbcode.ruler.push(noteType, {
         tag: noteType,
         replace: function(state, tagInfo, content) {
-          // Map tag names to CSS classes
+          // Map tag names to CSS classes (with legacy mapping)
           const typeMapping = {
             'note': 'note',
             'info': 'info', 
@@ -48,7 +48,13 @@ export function setup(helper) {
             'success': 'success',
             'important': 'important',
             'security': 'security',
-            'question': 'question'
+            'question': 'question',
+            // Legacy mappings
+            'negative': 'error',
+            'positive': 'success',
+            'caution': 'important',
+            'attention': 'important',
+            'tip': 'info'
           };
           
           let notificationClass = 'p-notification--' + typeMapping[noteType];
@@ -76,7 +82,13 @@ export function setup(helper) {
               'success': 'Успех',
               'important': 'Важно',
               'security': 'Безопасность',
-              'question': 'Вопрос'
+              'question': 'Вопрос',
+              // Legacy mappings - show as new types
+              'negative': 'Ошибка',
+              'positive': 'Успех',
+              'caution': 'Важно',
+              'attention': 'Важно',
+              'tip': 'Информация'
             };
             state.push('text', '', 0).content = statusText[noteType] + ': ';
             state.push('span_close', 'span', -1);
