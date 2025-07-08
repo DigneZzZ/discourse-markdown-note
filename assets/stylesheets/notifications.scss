@@ -617,83 +617,15 @@ body.dark-theme .note-types-dropdown,
   }
 }
 
-// =============================================================================
-// CRITICAL HIDE RULES - MUST BE AT THE END FOR MAXIMUM SPECIFICITY
-// =============================================================================
+// Simple backup rules (should not be needed now that HTML generation is controlled)
+// These are only for edge cases where settings change after page load
 
-/* Ultra-specific rules for hiding note icons when setting is disabled */
-body.hide-note-icons {
-  .p-notification .p-notification__icon,
-  .p-notification .p-notification__icon::before,
-  .p-notification .p-notification__icon::after {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-  }
-  
-  /* Adjust layout when icons are hidden */
-  .p-notification .p-notification__response {
-    padding-left: 1rem !important;
-    margin-left: 0 !important;
-  }
-  
-  /* Specific targeting for all content areas */
-  #main-outlet .p-notification .p-notification__icon,
-  .topic-body .p-notification .p-notification__icon,
-  .post-stream .p-notification .p-notification__icon,
-  .cooked .p-notification .p-notification__icon,
-  .topic-post .p-notification .p-notification__icon,
-  .post .p-notification .p-notification__icon,
-  .post-content .p-notification .p-notification__icon,
-  .regular .p-notification .p-notification__icon {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-  }
-}
-
-/* Ultra-specific rules for hiding note titles when setting is disabled */
-body.hide-note-titles {
-  .p-notification .p-notification__status {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-  }
-  
-  /* Specific targeting for all content areas */
-  #main-outlet .p-notification .p-notification__status,
-  .topic-body .p-notification .p-notification__status,
-  .post-stream .p-notification .p-notification__status,
-  .cooked .p-notification .p-notification__status,
-  .topic-post .p-notification .p-notification__status,
-  .post .p-notification .p-notification__status,
-  .post-content .p-notification .p-notification__status,
-  .regular .p-notification .p-notification__status {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-  }
-}
-
-/* Double-check rules - these should override everything */
 body.hide-note-icons .p-notification__icon {
-  display: none !important;
+  display: none;
 }
 
 body.hide-note-titles .p-notification__status {
-  display: none !important;
-}
-
-/* Add animation for smoother transitions */
-.p-notification .p-notification__icon,
-.p-notification .p-notification__status {
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-/* Force recalculation trigger */
-body.hide-note-icons .p-notification,
-body.hide-note-titles .p-notification {
-  position: relative;
+  display: none;
 }
 
 /* Override hide rules for ALL note types including new ones */
