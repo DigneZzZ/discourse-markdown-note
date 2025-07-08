@@ -1,30 +1,6 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-function initializeNoteThemeSettings(api) {
-  // More comprehensive admin route checking
-  const currentPath = window.location.pathname;
-  const isAdminRoute = currentPath.startsWith('/admin') || 
-                       currentPath.includes('/admin/') ||
-                       document.body.classList.contains('admin-interface') ||
-                       document.documentElement.classList.contains('admin-interface');
-  
-  if (isAdminRoute) {
-    console.log('[Markdown Notes] Skipping initialization on admin route:', currentPath);
-    return;
-  }
-  
-  // Extra safety: also check if we're in admin context
-  try {
-    const adminController = api.container.lookup('controller:admin');
-    if (adminController) {
-      console.log('[Markdown Notes] Admin controller detected, skipping initialization');
-      return;
-    }
-  } catch (e) {
-    // Continue if admin controller not found
-  }
-  
-  // Helper function to safely get site settings
+function initializeNoteThemeSettings(api) {  // Helper function to safely get site settings
   function getSiteSettings() {
     try {
       return api.container.lookup("site-settings:main");
@@ -135,39 +111,18 @@ function initializeNoteThemeSettings(api) {
   }  // Apply theme-based settings to CSS variables and display options
   function applyNoteStyles() {
     try {
-      // Double-check we're not in admin
-      const currentPath = window.location.pathname;
-      if (currentPath.startsWith('/admin') || 
-          document.body.classList.contains('admin-interface') ||
-          document.documentElement.classList.contains('admin-interface')) {
-        console.log('[Markdown Notes] Skipping style application on admin page');
-        return;
-      }
-      
       const siteSettings = getSiteSettings();
       const theme = getThemeMode();
       
       // Keep track of current theme with a data attribute
       document.body.setAttribute('data-note-theme', theme);
       
-      // Apply display options - RESTORED WORKING LOGIC FROM OLD VERSION
+      // Apply display options
       const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
       const showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
       
-      console.log(`[Markdown Notes] Settings - showTitles: ${showTitles}, showIcons: ${showIcons}`);
-      
-      // Use toggle method like in old working version
       document.body.classList.toggle('hide-note-titles', !showTitles);
       document.body.classList.toggle('hide-note-icons', !showIcons);
-      
-      console.log(`[Markdown Notes] Applied classes - body classes: ${document.body.className}`);
-      
-      // Only apply classes if not in admin
-      if (!document.body.classList.contains('admin-interface')) {
-        console.log('[Markdown Notes] Applied theme and display settings successfully');
-      } else {
-        console.log('[Markdown Notes] Skipping class application - in admin interface');
-      }
       
       // Apply settings for each note type
       setCSSVar('note', 'note_bg_light', 'note_bg_dark', 'discourse_markdown_note_note_border');
@@ -176,11 +131,6 @@ function initializeNoteThemeSettings(api) {
       setCSSVar('negative', 'negative_bg_light', 'negative_bg_dark', 'discourse_markdown_note_negative_border');
       setCSSVar('positive', 'positive_bg_light', 'positive_bg_dark', 'discourse_markdown_note_positive_border');
       setCSSVar('caution', 'caution_bg_light', 'caution_bg_dark', 'discourse_markdown_note_caution_border');
-      setCSSVar('tip', 'tip_bg_light', 'tip_bg_dark', 'discourse_markdown_note_tip_border');
-      setCSSVar('todo', 'todo_bg_light', 'todo_bg_dark', 'discourse_markdown_note_todo_border');
-      setCSSVar('bug', 'bug_bg_light', 'bug_bg_dark', 'discourse_markdown_note_bug_border');
-      setCSSVar('feature', 'feature_bg_light', 'feature_bg_dark', 'discourse_markdown_note_feature_border');
-      setCSSVar('security', 'security_bg_light', 'security_bg_dark', 'discourse_markdown_note_security_border');
       
       console.log(`[Markdown Notes] Applied ${theme} theme styles (Dark: ${isDarkTheme()})`);
     } catch (e) {
@@ -189,35 +139,10 @@ function initializeNoteThemeSettings(api) {
   }  
   // Apply styles on initialization
   applyNoteStyles();
-  // Delayed re-application to handle late DOM loading
-  setTimeout(() => {
-    if (!document.body.classList.contains('admin-interface')) {
-      console.log('[Markdown Notes] Delayed style re-application (5s after init)');
-      applyNoteStyles();
-    }
-  }, 5000);
-  
-  // Additional delayed application for slow-loading pages
-  setTimeout(() => {
-    if (!document.body.classList.contains('admin-interface')) {
-      console.log('[Markdown Notes] Final delayed style re-application (10s after init)');
-      applyNoteStyles();
-    }
-  }, 10000);
-
   // Enhanced event handling for theme changes
   let styleUpdateTimeout = null;
   
   function scheduleStyleUpdate() {
-    // Double-check we're not in admin before scheduling
-    const currentPath = window.location.pathname;
-    if (currentPath.startsWith('/admin') || 
-        document.body.classList.contains('admin-interface') ||
-        document.documentElement.classList.contains('admin-interface')) {
-      console.log('[Markdown Notes] Skipping scheduled update - in admin');
-      return;
-    }
-    
     if (styleUpdateTimeout) {
       clearTimeout(styleUpdateTimeout);
     }
@@ -228,14 +153,6 @@ function initializeNoteThemeSettings(api) {
   }
 
   const observer = new MutationObserver(function(mutations) {
-    // Skip if in admin
-    const currentPath = window.location.pathname;
-    if (currentPath.startsWith('/admin') || 
-        document.body.classList.contains('admin-interface') ||
-        document.documentElement.classList.contains('admin-interface')) {
-      return;
-    }
-    
     let shouldApplyStyles = false;
     
     mutations.forEach(function(mutation) {
@@ -269,68 +186,46 @@ function initializeNoteThemeSettings(api) {
   });
   // Listen for Discourse-specific theme events
   api.onPageChange(() => {
-    // Skip if navigated to admin
-    const currentPath = window.location.pathname;
-    if (!currentPath.startsWith('/admin')) {
-      scheduleStyleUpdate();
-    }
+    scheduleStyleUpdate();
   });
   
   // Listen for system color scheme changes
   const colorSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
   try {
     colorSchemeMedia.addEventListener('change', () => {
-      const currentPath = window.location.pathname;
-      if (!currentPath.startsWith('/admin')) {
-        console.log('[Markdown Notes] System color scheme changed');
-        scheduleStyleUpdate();
-      }
+      console.log('[Markdown Notes] System color scheme changed');
+      scheduleStyleUpdate();
     });
   } catch (e) {
     // Fallback for older browsers
     colorSchemeMedia.addListener(() => {
-      const currentPath = window.location.pathname;
-      if (!currentPath.startsWith('/admin')) {
-        console.log('[Markdown Notes] System color scheme changed (fallback)');
-        scheduleStyleUpdate();
-      }
+      console.log('[Markdown Notes] System color scheme changed (fallback)');
+      scheduleStyleUpdate();
     });
   }
   
   // Listen for Discourse app events
   if (api.onAppEvent) {
     api.onAppEvent('theme:changed', () => {
-      const currentPath = window.location.pathname;
-      if (!currentPath.startsWith('/admin')) {
-        console.log('[Markdown Notes] Discourse theme changed event');
-        scheduleStyleUpdate();
-      }
+      console.log('[Markdown Notes] Discourse theme changed event');
+      scheduleStyleUpdate();
     });
     
     api.onAppEvent('discourse-theme:changed', () => {
-      const currentPath = window.location.pathname;
-      if (!currentPath.startsWith('/admin')) {
-        console.log('[Markdown Notes] Discourse theme changed event (legacy)');
-        scheduleStyleUpdate();
-      }
+      console.log('[Markdown Notes] Discourse theme changed event (legacy)');
+      scheduleStyleUpdate();
     });
   }
   
   // Apply styles when window gains focus (for external theme changes)
   window.addEventListener('focus', () => {
-    const currentPath = window.location.pathname;
-    if (!currentPath.startsWith('/admin')) {
-      scheduleStyleUpdate();
-    }
+    scheduleStyleUpdate();
   });
   
   // Apply styles when DOM is fully loaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      const currentPath = window.location.pathname;
-      if (!currentPath.startsWith('/admin')) {
-        scheduleStyleUpdate();
-      }
+      scheduleStyleUpdate();
     });
   }
 }

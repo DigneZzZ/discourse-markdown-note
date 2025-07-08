@@ -11,11 +11,6 @@ export function setup(helper) {
     'div.p-notification--negative',
     'div.p-notification--positive',
     'div.p-notification--caution',
-    'div.p-notification--tip',
-    'div.p-notification--todo',
-    'div.p-notification--bug',
-    'div.p-notification--feature',
-    'div.p-notification--security',
     'div.p-notification--important',
     'div.p-notification__response',
     'span.p-notification__status',
@@ -24,7 +19,7 @@ export function setup(helper) {
 
   helper.registerPlugin(md => {
     // Define all supported note types
-    const noteTypes = ['note', 'info', 'warn', 'negative', 'positive', 'caution', 'tip', 'todo', 'bug', 'feature', 'security'];
+    const noteTypes = ['note', 'info', 'warn', 'negative', 'positive', 'caution'];
       // Get site settings for display options
     let siteSettings = {};
     let showTitles = true;
@@ -50,12 +45,7 @@ export function setup(helper) {
             'warn': 'warn',
             'negative': 'negative',
             'positive': 'positive',
-            'caution': 'caution',
-            'tip': 'tip',
-            'todo': 'todo',
-            'bug': 'bug',
-            'feature': 'feature',
-            'security': 'security'
+            'caution': 'caution'
           };
           
           let notificationClass = 'p-notification--' + typeMapping[noteType];
@@ -81,12 +71,7 @@ export function setup(helper) {
               'warn': 'Предупреждение',
               'negative': 'Внимание',
               'positive': 'Успех',
-              'caution': 'Осторожно',
-              'tip': 'Совет',
-              'todo': 'К выполнению',
-              'bug': 'Ошибка',
-              'feature': 'Новое',
-              'security': 'Безопасность'
+              'caution': 'Осторожно'
             };
             state.push('text', '', 0).content = statusText[noteType] + ': ';
             state.push('span_close', 'span', -1);
@@ -134,17 +119,7 @@ export function setup(helper) {
           'positive': 'positive',
           'danger': 'negative',
           'important': 'caution',
-          'caution': 'caution',
-          'tip': 'tip',
-          'hint': 'tip',
-          'todo': 'todo',
-          'task': 'todo',
-          'bug': 'bug',
-          'issue': 'bug',
-          'feature': 'feature',
-          'new': 'feature',
-          'security': 'security',
-          'alert': 'security'
+          'caution': 'caution'
         };
 
         const mappedType = legacyMapping[noteType] || 'note';
@@ -170,12 +145,7 @@ export function setup(helper) {
             'warn': 'Предупреждение',
             'negative': 'Внимание',
             'positive': 'Успех',
-            'caution': 'Осторожно',
-            'tip': 'Совет',
-            'todo': 'К выполнению',
-            'bug': 'Ошибка',
-            'feature': 'Новое',
-            'security': 'Безопасность'
+            'caution': 'Осторожно'
           };
           state.push('text', '', 0).content = (statusText[mappedType] || 'Заметка') + ': ';
           state.push('span_close', 'span', -1);

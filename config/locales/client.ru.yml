@@ -15,8 +15,3 @@ ru:
       negative_title: "Внимание"
       positive_title: "Успех"
       caution_title: "Осторожно"
-      tip_title: "Совет"
-      todo_title: "К выполнению"
-      bug_title: "Ошибка"
-      feature_title: "Новое"
-      security_title: "Безопасность"

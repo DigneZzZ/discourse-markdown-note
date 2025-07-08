@@ -15,8 +15,3 @@ en:
       negative_title: "Attention"
       positive_title: "Success"
       caution_title: "Caution"
-      tip_title: "Tip"
-      todo_title: "To Do"
-      bug_title: "Bug"
-      feature_title: "Feature"
-      security_title: "Security"

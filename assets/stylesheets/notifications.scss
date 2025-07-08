@@ -21,23 +21,6 @@
   --caution-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.7) 0%, rgba(248, 187, 217, 0.8) 100%);
   --caution-border-color: #e91e63;
   --caution-text-color: #ad1457;
-  
-  // New types
-  --tip-bg-color: linear-gradient(135deg, rgba(255, 243, 224, 0.7) 0%, rgba(255, 224, 178, 0.8) 100%);
-  --tip-border-color: #ff9800;
-  --tip-text-color: #f57c00;
-  --todo-bg-color: linear-gradient(135deg, rgba(243, 229, 245, 0.7) 0%, rgba(225, 190, 231, 0.8) 100%);
-  --todo-border-color: #9c27b0;
-  --todo-text-color: #7b1fa2;
-  --bug-bg-color: linear-gradient(135deg, rgba(255, 235, 238, 0.7) 0%, rgba(255, 205, 210, 0.8) 100%);
-  --bug-border-color: #d32f2f;
-  --bug-text-color: #c62828;
-  --feature-bg-color: linear-gradient(135deg, rgba(232, 245, 232, 0.7) 0%, rgba(200, 230, 201, 0.8) 100%);
-  --feature-border-color: #388e3c;
-  --feature-text-color: #2e7d32;
-  --security-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.7) 0%, rgba(248, 187, 217, 0.8) 100%);
-  --security-border-color: #d81b60;
-  --security-text-color: #ad1457;
 }
 
 // Override colors for dark theme automatically
@@ -55,18 +38,6 @@
     --positive-text-color: #a5d6a7;
     --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
     --caution-text-color: #f48fb1;
-    
-    // New types dark theme
-    --tip-bg-color: linear-gradient(135deg, #332419 0%, #47361a 100%);
-    --tip-text-color: #ffb74d;
-    --todo-bg-color: linear-gradient(135deg, #2a1b2f 0%, #3f2547 100%);
-    --todo-text-color: #ce93d8;
-    --bug-bg-color: linear-gradient(135deg, #330a0a 0%, #471a1a 100%);
-    --bug-text-color: #ef5350;
-    --feature-bg-color: linear-gradient(135deg, #1a2e1a 0%, #244d24 100%);
-    --feature-text-color: #81c784;
-    --security-bg-color: linear-gradient(135deg, #331826 0%, #472433 100%);
-    --security-text-color: #f06292;
   }
 }
 
@@ -84,18 +55,6 @@ body[data-note-theme="dark"] {
   --positive-text-color: #a5d6a7;
   --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
   --caution-text-color: #f48fb1;
-  
-  // New types dark theme
-  --tip-bg-color: linear-gradient(135deg, #332419 0%, #47361a 100%);
-  --tip-text-color: #ffb74d;
-  --todo-bg-color: linear-gradient(135deg, #2a1b2f 0%, #3f2547 100%);
-  --todo-text-color: #ce93d8;
-  --bug-bg-color: linear-gradient(135deg, #330a0a 0%, #471a1a 100%);
-  --bug-text-color: #ef5350;
-  --feature-bg-color: linear-gradient(135deg, #1a2e1a 0%, #244d24 100%);
-  --feature-text-color: #81c784;
-  --security-bg-color: linear-gradient(135deg, #331826 0%, #472433 100%);
-  --security-text-color: #f06292;
 }
 
 // Manual light theme class override (for user selection)
@@ -112,18 +71,6 @@ body[data-note-theme="light"] {
   --positive-text-color: #2e7d32;
   --caution-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.6) 0%, rgba(248, 187, 217, 0.75) 100%);
   --caution-text-color: #ad1457;
-  
-  // New types light theme
-  --tip-bg-color: linear-gradient(135deg, rgba(255, 243, 224, 0.6) 0%, rgba(255, 224, 178, 0.75) 100%);
-  --tip-text-color: #f57c00;
-  --todo-bg-color: linear-gradient(135deg, rgba(243, 229, 245, 0.6) 0%, rgba(225, 190, 231, 0.75) 100%);
-  --todo-text-color: #7b1fa2;
-  --bug-bg-color: linear-gradient(135deg, rgba(255, 235, 238, 0.6) 0%, rgba(255, 205, 210, 0.75) 100%);
-  --bug-text-color: #c62828;
-  --feature-bg-color: linear-gradient(135deg, rgba(232, 245, 232, 0.6) 0%, rgba(200, 230, 201, 0.75) 100%);
-  --feature-text-color: #2e7d32;
-  --security-bg-color: linear-gradient(135deg, rgba(252, 228, 236, 0.6) 0%, rgba(248, 187, 217, 0.75) 100%);
-  --security-text-color: #ad1457;
 }
 
 // Auto theme - adaptive transparency that works on any background
@@ -157,11 +104,8 @@ body:not([data-note-theme]) {
 
 
 
-// Base notification styles - only in content areas, not admin
-#main-outlet .p-notification,
-.topic-body .p-notification,
-.post-stream .p-notification,
-.cooked .p-notification {
+// Base notification styles
+.p-notification {
   margin-bottom: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -171,28 +115,12 @@ body:not([data-note-theme]) {
 }
 
 // Enhanced shadow for light theme transparency
-body[data-note-theme="light"] {
-  #main-outlet .p-notification,
-  .topic-body .p-notification,
-  .post-stream .p-notification,
-  .cooked .p-notification {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
-  }
+body[data-note-theme="light"] .p-notification,
+body:not([data-note-theme]) .p-notification {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
-body:not([data-note-theme]) {
-  #main-outlet .p-notification,
-  .topic-body .p-notification,
-  .post-stream .p-notification,
-  .cooked .p-notification {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
-  }
-}
-
-#main-outlet .p-notification__response,
-.topic-body .p-notification__response,
-.post-stream .p-notification__response,
-.cooked .p-notification__response {
+.p-notification__response {
   padding: 1rem 1rem 1rem 3.5rem;
   position: relative;
   margin: 0;
@@ -205,10 +133,7 @@ body:not([data-note-theme]) {
   }
 }
 
-#main-outlet .p-notification__icon,
-.topic-body .p-notification__icon,
-.post-stream .p-notification__icon,
-.cooked .p-notification__icon {
+.p-notification__icon {
   position: absolute;
   left: 1rem;
   top: 1rem;
@@ -228,68 +153,13 @@ body:not([data-note-theme]) {
   }
 }
 
-#main-outlet .p-notification__status,
-.topic-body .p-notification__status,
-.post-stream .p-notification__status,
-.cooked .p-notification__status {
+.p-notification__status {
   font-weight: 600;
   margin-right: 0.5rem;
   
   // Hide status titles when disabled
   body.hide-note-titles & {
     display: none;
-  }
-}
-
-// Very specific overrides for hiding icons and titles - ONLY for post content
-// Exclude admin interface completely
-body:not(.admin-interface):not([class*="admin"]) {
-  &.hide-note-icons {
-    #main-outlet .p-notification .p-notification__icon,
-    #main-outlet .p-notification .p-notification__icon::before,
-    .topic-body .p-notification .p-notification__icon,
-    .topic-body .p-notification .p-notification__icon::before,
-    .post-stream .p-notification .p-notification__icon,
-    .post-stream .p-notification .p-notification__icon::before,
-    .cooked .p-notification .p-notification__icon,
-    .cooked .p-notification .p-notification__icon::before {
-      display: none !important;
-    }
-    
-    // Adjust padding when icons are hidden
-    #main-outlet .p-notification .p-notification__response,
-    .topic-body .p-notification .p-notification__response,
-    .post-stream .p-notification .p-notification__response,
-    .cooked .p-notification .p-notification__response {
-      padding-left: 1rem !important;
-    }
-  }
-
-  &.hide-note-titles {
-    #main-outlet .p-notification .p-notification__status,
-    .topic-body .p-notification .p-notification__status,
-    .post-stream .p-notification .p-notification__status,
-    .cooked .p-notification .p-notification__status {
-      display: none !important;
-    }
-  }
-}
-
-// Simplified direct rules as backup
-body.hide-note-icons {
-  .p-notification .p-notification__icon,
-  .p-notification .p-notification__icon::before {
-    display: none !important;
-  }
-  
-  .p-notification .p-notification__response {
-    padding-left: 1rem !important;
-  }
-}
-
-body.hide-note-titles {
-  .p-notification .p-notification__status {
-    display: none !important;
   }
 }
 
@@ -420,116 +290,6 @@ body.hide-note-titles {
   color: var(--note-caution-text, var(--caution-text-color));
 }
 
-// TIP styles
-.p-notification--tip {
-  background: var(--note-tip-bg, var(--tip-bg-color));
-  border-left: 4px solid var(--note-tip-border, var(--tip-border-color));
-}
-
-.p-notification--tip .p-notification__response {
-  color: var(--note-tip-text, var(--tip-text-color));
-}
-
-.p-notification--tip .p-notification__icon {
-  background: var(--note-tip-border, var(--tip-border-color));
-}
-
-.p-notification--tip .p-notification__icon::before {
-  content: "💡";
-}
-
-.p-notification--tip .p-notification__status {
-  color: var(--note-tip-text, var(--tip-text-color));
-}
-
-// TODO styles
-.p-notification--todo {
-  background: var(--note-todo-bg, var(--todo-bg-color));
-  border-left: 4px solid var(--note-todo-border, var(--todo-border-color));
-}
-
-.p-notification--todo .p-notification__response {
-  color: var(--note-todo-text, var(--todo-text-color));
-}
-
-.p-notification--todo .p-notification__icon {
-  background: var(--note-todo-border, var(--todo-border-color));
-}
-
-.p-notification--todo .p-notification__icon::before {
-  content: "📝";
-}
-
-.p-notification--todo .p-notification__status {
-  color: var(--note-todo-text, var(--todo-text-color));
-}
-
-// BUG styles
-.p-notification--bug {
-  background: var(--note-bug-bg, var(--bug-bg-color));
-  border-left: 4px solid var(--note-bug-border, var(--bug-border-color));
-}
-
-.p-notification--bug .p-notification__response {
-  color: var(--note-bug-text, var(--bug-text-color));
-}
-
-.p-notification--bug .p-notification__icon {
-  background: var(--note-bug-border, var(--bug-border-color));
-}
-
-.p-notification--bug .p-notification__icon::before {
-  content: "🐛";
-}
-
-.p-notification--bug .p-notification__status {
-  color: var(--note-bug-text, var(--bug-text-color));
-}
-
-// FEATURE styles
-.p-notification--feature {
-  background: var(--note-feature-bg, var(--feature-bg-color));
-  border-left: 4px solid var(--note-feature-border, var(--feature-border-color));
-}
-
-.p-notification--feature .p-notification__response {
-  color: var(--note-feature-text, var(--feature-text-color));
-}
-
-.p-notification--feature .p-notification__icon {
-  background: var(--note-feature-border, var(--feature-border-color));
-}
-
-.p-notification--feature .p-notification__icon::before {
-  content: "✨";
-}
-
-.p-notification--feature .p-notification__status {
-  color: var(--note-feature-text, var(--feature-text-color));
-}
-
-// SECURITY styles
-.p-notification--security {
-  background: var(--note-security-bg, var(--security-bg-color));
-  border-left: 4px solid var(--note-security-border, var(--security-border-color));
-}
-
-.p-notification--security .p-notification__response {
-  color: var(--note-security-text, var(--security-text-color));
-}
-
-.p-notification--security .p-notification__icon {
-  background: var(--note-security-border, var(--security-border-color));
-}
-
-.p-notification--security .p-notification__icon::before {
-  content: "🔒";
-}
-
-.p-notification--security .p-notification__status {
-  color: var(--note-security-text, var(--security-text-color));
-}
-
 // Editor dropdown styles
 .note-types-dropdown {
   background: var(--secondary);
@@ -614,64 +374,5 @@ body.dark-theme .note-types-dropdown,
   .note-type-button {
     padding: 6px 12px;
     font-size: 14px;
-  }
-}
-
-// Simple backup rules (should not be needed now that HTML generation is controlled)
-// These are only for edge cases where settings change after page load
-
-body.hide-note-icons .p-notification__icon {
-  display: none;
-}
-
-body.hide-note-titles .p-notification__status {
-  display: none;
-}
-
-/* Override hide rules for ALL note types including new ones */
-body.hide-note-icons {
-  .p-notification--note .p-notification__icon,
-  .p-notification--info .p-notification__icon,
-  .p-notification--warn .p-notification__icon,
-  .p-notification--negative .p-notification__icon,
-  .p-notification--positive .p-notification__icon,
-  .p-notification--caution .p-notification__icon,
-  .p-notification--tip .p-notification__icon,
-  .p-notification--todo .p-notification__icon,
-  .p-notification--bug .p-notification__icon,
-  .p-notification--feature .p-notification__icon,
-  .p-notification--security .p-notification__icon {
-    display: none !important;
-  }
-  
-  /* Adjust padding for all note types */
-  .p-notification--note .p-notification__response,
-  .p-notification--info .p-notification__response,
-  .p-notification--warn .p-notification__response,
-  .p-notification--negative .p-notification__response,
-  .p-notification--positive .p-notification__response,
-  .p-notification--caution .p-notification__response,
-  .p-notification--tip .p-notification__response,
-  .p-notification--todo .p-notification__response,
-  .p-notification--bug .p-notification__response,
-  .p-notification--feature .p-notification__response,
-  .p-notification--security .p-notification__response {
-    padding-left: 1rem !important;
-  }
-}
-
-body.hide-note-titles {
-  .p-notification--note .p-notification__status,
-  .p-notification--info .p-notification__status,
-  .p-notification--warn .p-notification__status,
-  .p-notification--negative .p-notification__status,
-  .p-notification--positive .p-notification__status,
-  .p-notification--caution .p-notification__status,
-  .p-notification--tip .p-notification__status,
-  .p-notification--todo .p-notification__status,
-  .p-notification--bug .p-notification__status,
-  .p-notification--feature .p-notification__status,
-  .p-notification--security .p-notification__status {
-    display: none !important;
   }
 }
