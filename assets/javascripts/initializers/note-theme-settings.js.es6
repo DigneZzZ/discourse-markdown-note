@@ -117,12 +117,16 @@ function initializeNoteThemeSettings(api) {  // Helper function to safely get si
       // Keep track of current theme with a data attribute
       document.body.setAttribute('data-note-theme', theme);
       
-      // Apply display options
-      const showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
-      const showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
+      // Apply display options with more strict checking
+      const showTitles = siteSettings.discourse_markdown_note_show_titles === true;
+      const showIcons = siteSettings.discourse_markdown_note_show_icons === true;
+      
+      console.log(`[Markdown Notes] Settings - showTitles: ${showTitles} (${siteSettings.discourse_markdown_note_show_titles}), showIcons: ${showIcons} (${siteSettings.discourse_markdown_note_show_icons})`);
       
       document.body.classList.toggle('hide-note-titles', !showTitles);
       document.body.classList.toggle('hide-note-icons', !showIcons);
+      
+      console.log(`[Markdown Notes] Applied classes - hide-note-titles: ${!showTitles}, hide-note-icons: ${!showIcons}`);
       
       // Apply settings for each note type
       setCSSVar('note', 'note_bg_light', 'note_bg_dark', 'discourse_markdown_note_note_border');

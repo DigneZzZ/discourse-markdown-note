@@ -216,6 +216,25 @@ body:not([data-note-theme]) .p-notification {
   }
 }
 
+// Global overrides for hiding icons and titles
+body.hide-note-icons {
+  .p-notification__icon,
+  .p-notification__icon::before {
+    display: none !important;
+  }
+  
+  // Adjust padding when icons are hidden
+  .p-notification__response {
+    padding-left: 1rem !important;
+  }
+}
+
+body.hide-note-titles {
+  .p-notification__status {
+    display: none !important;
+  }
+}
+
 // Dynamic CSS variables support - these get overridden by JavaScript
 .p-notification--note {
   background: var(--note-note-bg, var(--note-bg-color));

@@ -32,8 +32,8 @@ export function setup(helper) {
     
     try {
       siteSettings = helper.getOption('siteSettings') || {};
-      showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
-      showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
+      showTitles = siteSettings.discourse_markdown_note_show_titles === true;
+      showIcons = siteSettings.discourse_markdown_note_show_icons === true;
     } catch (settingsError) {
       console.warn('[Markdown Notes] Could not get site settings, using defaults:', settingsError);
     }
