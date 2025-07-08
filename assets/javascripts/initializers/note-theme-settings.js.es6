@@ -124,16 +124,15 @@ function initializeNoteThemeSettings(api) {  // Helper function to safely get si
       document.body.classList.toggle('hide-note-titles', !showTitles);
       document.body.classList.toggle('hide-note-icons', !showIcons);
       
-      // Apply settings for each note type
+      // Apply settings for each note type (optimized set)
       setCSSVar('note', 'note_bg_light', 'note_bg_dark', 'discourse_markdown_note_note_border');
       setCSSVar('info', 'info_bg_light', 'info_bg_dark', 'discourse_markdown_note_info_border');
       setCSSVar('warn', 'warn_bg_light', 'warn_bg_dark', 'discourse_markdown_note_warn_border');
-      setCSSVar('negative', 'negative_bg_light', 'negative_bg_dark', 'discourse_markdown_note_negative_border');
-      setCSSVar('positive', 'positive_bg_light', 'positive_bg_dark', 'discourse_markdown_note_positive_border');
-      setCSSVar('caution', 'caution_bg_light', 'caution_bg_dark', 'discourse_markdown_note_caution_border');
-      setCSSVar('attention', 'attention_bg_light', 'attention_bg_dark', 'discourse_markdown_note_attention_border');
+      setCSSVar('error', 'error_bg_light', 'error_bg_dark', 'discourse_markdown_note_error_border');
+      setCSSVar('success', 'success_bg_light', 'success_bg_dark', 'discourse_markdown_note_success_border');
+      setCSSVar('important', 'important_bg_light', 'important_bg_dark', 'discourse_markdown_note_important_border');
       setCSSVar('security', 'security_bg_light', 'security_bg_dark', 'discourse_markdown_note_security_border');
-      setCSSVar('tip', 'tip_bg_light', 'tip_bg_dark', 'discourse_markdown_note_tip_border');
+      setCSSVar('question', 'question_bg_light', 'question_bg_dark', 'discourse_markdown_note_question_border');
       
       console.log(`[Markdown Notes] Applied ${theme} theme styles (Dark: ${isDarkTheme()})`);
     } catch (e) {
