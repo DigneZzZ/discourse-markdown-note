@@ -12,27 +12,12 @@ const NOTE_TYPES = [
 ];
 
 function initializeNoteEditorButton(api) {
-  api.modifyClass("controller:composer", {
-    pluginId: "discourse-markdown-note",
-    
-    actions: {
-      insertNote(noteType) {
-        const selected = this.get("toolbarEvent")?.selected || "";
-        const text = selected || I18n.t("note.composer_placeholder", { defaultValue: "Your text here" });
-        const output = `[${noteType}]\n${text}\n[/${noteType}]`;
-        
-        if (this.get("toolbarEvent")) {
-          this.get("toolbarEvent").addText(output);
-        }
-      }
-    }
-  });
-
   api.onToolbarCreate((toolbar) => {
     toolbar.addButton({
-      id: "insert-note",
+      id: "note-insert",
       group: "extras",
-      icon: "sticky-note",
+      icon: "file-alt",
+      className: "note-insert-btn",
       title: "note.composer_title",
       perform: (toolbarEvent) => {
         showNoteDropdown(toolbarEvent);
@@ -49,17 +34,27 @@ function showNoteDropdown(toolbarEvent) {
     return;
   }
 
-  // Find the button to position dropdown
-  const button = document.querySelector('button[data-id="insert-note"]');
-  if (!button) return;
+  // Find the button to position dropdown - try multiple selectors
+  const button = document.querySelector('.d-editor-button-bar .note-insert-btn')
+    || document.querySelector('button.note-insert-btn')
+    || document.querySelector('button[title*="заметку"]')
+    || document.querySelector('button[title*="note"]');
+  
+  if (!button) {
+    // Fallback: just insert a default note
+    insertNoteTag(toolbarEvent, 'note');
+    return;
+  }
 
   const rect = button.getBoundingClientRect();
   
   // Create dropdown
   const dropdown = document.createElement('div');
   dropdown.className = 'note-types-dropdown';
+  dropdown.style.position = 'fixed';
   dropdown.style.top = `${rect.bottom + 4}px`;
   dropdown.style.left = `${rect.left}px`;
+  dropdown.style.zIndex = '9999';
 
   // Add note type buttons
   NOTE_TYPES.forEach(noteType => {
