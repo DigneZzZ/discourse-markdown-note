@@ -16,7 +16,7 @@ function initializeNoteEditorButton(api) {
     toolbar.addButton({
       id: "note-insert",
       group: "extras",
-      icon: "file-alt",
+      icon: "far-clipboard",
       className: "note-insert-btn",
       title: "note.composer_title",
       perform: (toolbarEvent) => {
