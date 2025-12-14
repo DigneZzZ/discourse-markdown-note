@@ -1,27 +1,143 @@
+// Note type constants and mappings
+const NOTE_TYPES = ['note', 'info', 'warn', 'error', 'success', 'important', 'security', 'question'];
+const LEGACY_TYPES = ['negative', 'positive', 'caution', 'attention', 'tip'];
+const ALL_NOTE_TYPES = [...NOTE_TYPES, ...LEGACY_TYPES];
+
+// Maps legacy type names to current types
+const TYPE_MAPPINGS = {
+  'note': 'note',
+  'info': 'info',
+  'warn': 'warn',
+  'warning': 'warn',
+  'error': 'error',
+  'success': 'success',
+  'important': 'important',
+  'security': 'security',
+  'question': 'question',
+  // Legacy mappings
+  'negative': 'error',
+  'positive': 'success',
+  'caution': 'important',
+  'attention': 'important',
+  'tip': 'info',
+  'danger': 'error'
+};
+
+// Fallback status text (used when i18n is not available)
+const FALLBACK_STATUS_TEXT = {
+  'note': 'Note',
+  'info': 'Info',
+  'warn': 'Warning',
+  'error': 'Error',
+  'success': 'Success',
+  'important': 'Important',
+  'security': 'Security',
+  'question': 'Question'
+};
+
+/**
+ * Get localized status text for a note type
+ * @param {string} type - The note type
+ * @param {object} siteSettings - Site settings object (may contain translations)
+ * @returns {string} - Localized status text
+ */
+function getStatusText(type, siteSettings) {
+  const mappedType = TYPE_MAPPINGS[type] || 'note';
+  
+  // Try to get from I18n if available (client-side)
+  if (typeof I18n !== 'undefined' && I18n.t) {
+    try {
+      const key = `js.note.${mappedType}_title`;
+      const translated = I18n.t(key);
+      // I18n returns the key itself if translation is missing
+      if (translated && !translated.includes(key)) {
+        return translated;
+      }
+    } catch (e) {
+      // I18n not available, use fallback
+    }
+  }
+  
+  return FALLBACK_STATUS_TEXT[mappedType] || FALLBACK_STATUS_TEXT['note'];
+}
+
+/**
+ * Creates note content in the markdown state
+ * @param {object} state - Markdown-it state object
+ * @param {string} noteType - Original note type from tag
+ * @param {string} content - Note content
+ * @param {object} options - Display options (showIcons, showTitles)
+ */
+function createNoteContent(state, noteType, content, options) {
+  const { showIcons, showTitles, siteSettings } = options;
+  const mappedType = TYPE_MAPPINGS[noteType] || 'note';
+  const notificationClass = 'p-notification--' + mappedType;
+
+  // Start wrapper elements with accessibility attributes
+  const wrapperToken = state.push('div_open', 'div', 1);
+  wrapperToken.attrSet('class', 'p-notification');
+  wrapperToken.attrSet('role', 'note');
+  
+  state.push('div_open', 'div', 1).attrSet('class', notificationClass);
+  state.push('div_open', 'div', 1).attrSet('class', 'p-notification__response');
+  
+  // Add icon span if enabled
+  if (showIcons) {
+    const iconToken = state.push('span_open', 'span', 1);
+    iconToken.attrSet('class', 'p-notification__icon');
+    iconToken.attrSet('aria-hidden', 'true');
+    state.push('span_close', 'span', -1);
+  }
+  
+  // Add status title if enabled
+  if (showTitles) {
+    state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
+    state.push('text', '', 0).content = getStatusText(noteType, siteSettings) + ': ';
+    state.push('span_close', 'span', -1);
+  }
+
+  // Parse and add the note content
+  try {
+    const tokens = state.md.parse(content, state.env);
+    tokens.forEach(element => {
+      // Fix duplicate text issue: "inline" elements contain text in both
+      // "content" property and as "text" child nodes
+      if (element.type === "inline") {
+        element.content = "";
+      }
+      state.tokens.push(element);
+    });
+  } catch (parseError) {
+    // Fallback: add content as simple text
+    state.push('text', '', 0).content = content;
+  }
+
+  // Close wrapper elements
+  state.push('div_close', 'div', -1);
+  state.push('div_close', 'div', -1);
+  state.push('div_close', 'div', -1);
+
+  return true;
+}
+
 export function setup(helper) {
   if (!helper.markdownIt) {
     return;
   }
   
+  // Register allowed HTML elements
   helper.allowList([
     'div.p-notification',
-    'div.p-notification--note',
-    'div.p-notification--info',
-    'div.p-notification--warn',
-    'div.p-notification--error',
-    'div.p-notification--success',
-    'div.p-notification--important',
-    'div.p-notification--security',
-    'div.p-notification--question',
+    'div.p-notification[role=note]',
+    ...NOTE_TYPES.map(type => `div.p-notification--${type}`),
     'div.p-notification__response',
     'span.p-notification__status',
-    'span.p-notification__icon'
+    'span.p-notification__icon',
+    'span.p-notification__icon[aria-hidden=true]'
   ]);
 
   helper.registerPlugin(md => {
-    // Define all supported note types (including legacy types)
-    const noteTypes = ['note', 'info', 'warn', 'error', 'success', 'important', 'security', 'question', 'negative', 'positive', 'caution', 'attention', 'tip'];
-      // Get site settings for display options
+    // Get site settings for display options
     let siteSettings = {};
     let showTitles = true;
     let showIcons = true;
@@ -30,169 +146,29 @@ export function setup(helper) {
       siteSettings = helper.getOption('siteSettings') || {};
       showTitles = siteSettings.discourse_markdown_note_show_titles !== false;
       showIcons = siteSettings.discourse_markdown_note_show_icons !== false;
-    } catch (settingsError) {
-      console.warn('[Markdown Notes] Could not get site settings, using defaults:', settingsError);
+    } catch (e) {
+      // Use defaults if settings unavailable
     }
     
-    // Register each note type as a separate tag
-    noteTypes.forEach(noteType => {
+    const displayOptions = { showIcons, showTitles, siteSettings };
+
+    // Register each note type as a BBCode tag
+    ALL_NOTE_TYPES.forEach(noteType => {
       md.block.bbcode.ruler.push(noteType, {
         tag: noteType,
         replace: function(state, tagInfo, content) {
-          // Map tag names to CSS classes (with legacy mapping)
-          const typeMapping = {
-            'note': 'note',
-            'info': 'info', 
-            'warn': 'warn',
-            'error': 'error',
-            'success': 'success',
-            'important': 'important',
-            'security': 'security',
-            'question': 'question',
-            // Legacy mappings
-            'negative': 'error',
-            'positive': 'success',
-            'caution': 'important',
-            'attention': 'important',
-            'tip': 'info'
-          };
-          
-          let notificationClass = 'p-notification--' + typeMapping[noteType];
+          return createNoteContent(state, noteType, content, displayOptions);
+        }
+      });
+    });
 
-          // Start wrapper elements:
-          // <div class="p-notification"><div class="p-notification__response">
-          state.push('div_open', 'div', 1).attrSet('class', 'p-notification');
-          state.push('div_open', 'div', 1).attrSet('class', notificationClass);
-          state.push('div_open', 'div', 1).attrSet('class', 'p-notification__response');
-          
-          // Add icon span if enabled
-          if (showIcons) {
-            state.push('span_open', 'span', 1).attrSet('class', 'p-notification__icon');
-            state.push('span_close', 'span', -1);
-          }
-          
-          // Add status based on note type if enabled
-          if (showTitles) {
-            state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
-            const statusText = {
-              'note': 'Заметка',
-              'info': 'Информация', 
-              'warn': 'Предупреждение',
-              'error': 'Ошибка',
-              'success': 'Успех',
-              'important': 'Важно',
-              'security': 'Безопасность',
-              'question': 'Вопрос',
-              // Legacy mappings - show as new types
-              'negative': 'Ошибка',
-              'positive': 'Успех',
-              'caution': 'Важно',
-              'attention': 'Важно',
-              'tip': 'Информация'
-            };
-            state.push('text', '', 0).content = statusText[noteType] + ': ';
-            state.push('span_close', 'span', -1);
-          }          // Add the [note] content
-          try {
-            const tokens = state.md.parse(content, state.env);
-            tokens.forEach(element => {
-              // For some reason, "inline" elements contain their text twice,
-              // which duplicates the text on the page.
-              // This is because the text appears both inside the "content" of the inline block,
-              // and in a "text" child node of the block.
-              // We therefore strip the "content", so the text only appears once.
-              if (element.type == "inline") {
-                element.content = ""
-              }
-              state.tokens.push(element)
-            });
-          } catch (parseError) {
-            console.error('[Markdown Notes] Error parsing note content:', parseError);
-            // Fallback: add content as simple text
-            state.push('text', '', 0).content = content;
-          }
-            // Close the wrapper elements
-          state.push('div_close', 'div', -1);
-          state.push('div_close', 'div', -1);
-          state.push('div_close', 'div', -1);
-
-          return true;
-        }      });
-    });    // Support for legacy [note type=""] syntax
+    // Support for legacy [note type="..."] syntax
     md.block.bbcode.ruler.push('note-legacy', {
       tag: 'note',
       replace: function(state, tagInfo, content) {
         const attrs = tagInfo.attrs || {};
         const noteType = attrs.type || 'note';
-        
-        // Map legacy type names to new format
-        const legacyMapping = {
-          'info': 'info',
-          'tip': 'info', // tip is now a synonym for info
-          'warn': 'warn', 
-          'warning': 'warn',
-          'error': 'error',
-          'negative': 'error', // renamed negative to error
-          'success': 'success',
-          'positive': 'success', // renamed positive to success
-          'danger': 'error',
-          'important': 'important',
-          'caution': 'important', // renamed caution to important
-          'attention': 'important', // attention maps to important
-          'security': 'security',
-          'question': 'question'
-        };
-
-        const mappedType = legacyMapping[noteType] || 'note';
-        let notificationClass = 'p-notification--' + mappedType;
-
-        // Start wrapper elements
-        state.push('div_open', 'div', 1).attrSet('class', 'p-notification');
-        state.push('div_open', 'div', 1).attrSet('class', notificationClass);
-        state.push('div_open', 'div', 1).attrSet('class', 'p-notification__response');
-        
-        // Add icon span if enabled
-        if (showIcons) {
-          state.push('span_open', 'span', 1).attrSet('class', 'p-notification__icon');
-          state.push('span_close', 'span', -1);
-        }
-        
-        // Add status based on note type if enabled
-        if (showTitles) {
-          state.push('span_open', 'span', 1).attrSet('class', 'p-notification__status');
-          const statusText = {
-            'note': 'Заметка',
-            'info': 'Информация', 
-            'warn': 'Предупреждение',
-            'error': 'Ошибка',
-            'success': 'Успех',
-            'important': 'Важно',
-            'security': 'Безопасность',
-            'question': 'Вопрос'
-          };
-          state.push('text', '', 0).content = (statusText[mappedType] || 'Заметка') + ': ';
-          state.push('span_close', 'span', -1);
-        }        // Add the note content
-        try {
-          const tokens = state.md.parse(content, state.env);
-          tokens.forEach(element => {
-            if (element.type == "inline") {
-              element.content = ""
-            }
-            state.tokens.push(element)
-          });
-        } catch (parseError) {
-          console.error('[Markdown Notes] Error parsing legacy note content:', parseError);
-          // Fallback: add content as simple text
-          state.push('text', '', 0).content = content;
-        }
-        
-        // Close the wrapper elements
-        state.push('div_close', 'div', -1);
-        state.push('div_close', 'div', -1);
-        state.push('div_close', 'div', -1);
-
-        return true;
+        return createNoteContent(state, noteType, content, displayOptions);
       }
     });
   });

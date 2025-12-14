@@ -59,12 +59,16 @@ body[data-note-theme="dark"] {
   --info-text-color: #90caf9;
   --warn-bg-color: linear-gradient(135deg, #332b1a 0%, #473a24 100%);
   --warn-text-color: #ffcc02;
-  --negative-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%);
-  --negative-text-color: #ff8a80;
-  --positive-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%);
-  --positive-text-color: #a5d6a7;
-  --caution-bg-color: linear-gradient(135deg, #331a26 0%, #472433 100%);
-  --caution-text-color: #f48fb1;
+  --error-bg-color: linear-gradient(135deg, #331a1a 0%, #472424 100%);
+  --error-text-color: #ff8a80;
+  --success-bg-color: linear-gradient(135deg, #1a331a 0%, #244724 100%);
+  --success-text-color: #a5d6a7;
+  --important-bg-color: linear-gradient(135deg, #332a1a 0%, #473a24 100%);
+  --important-text-color: #ffab91;
+  --security-bg-color: linear-gradient(135deg, #2a1a33 0%, #3a2447 100%);
+  --security-text-color: #ce93d8;
+  --question-bg-color: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+  --question-text-color: #90caf9;
 }
 
 // Manual light theme class override (for user selection)
@@ -128,9 +132,9 @@ body:not([data-note-theme]) {
 
 // Base notification styles
 .p-notification {
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   backdrop-filter: blur(2px); // Adds subtle blur effect for better transparency
   -webkit-backdrop-filter: blur(2px); // Safari support
@@ -143,30 +147,31 @@ body:not([data-note-theme]) .p-notification {
 }
 
 .p-notification__response {
-  padding: 1rem 1rem 1rem 3.5rem;
+  padding: 0.625rem 0.875rem 0.625rem 2.75rem;
   position: relative;
   margin: 0;
   border: none;
   color: var(--primary);
+  line-height: 1.5;
   
   // Adjust padding when icons are disabled
   body.hide-note-icons & {
-    padding-left: 1rem;
+    padding-left: 0.875rem;
   }
 }
 
 .p-notification__icon {
   position: absolute;
-  left: 1rem;
-  top: 1rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  left: 0.75rem;
+  top: 0.625rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: white;
   
   // Hide icons when disabled
@@ -305,32 +310,11 @@ body:not([data-note-theme]) .p-notification {
 }
 
 .p-notification--important .p-notification__icon::before {
-  content: "�";
+  content: "🔥";
 }
 
 .p-notification--important .p-notification__status {
   color: var(--note-important-text, var(--important-text-color));
-}
-
-.p-notification--attention {
-  background: var(--note-attention-bg, var(--attention-bg-color));
-  border-left: 4px solid var(--note-attention-border, var(--attention-border-color));
-}
-
-.p-notification--attention .p-notification__response {
-  color: var(--note-attention-text, var(--attention-text-color));
-}
-
-.p-notification--attention .p-notification__icon {
-  background: var(--note-attention-border, var(--attention-border-color));
-}
-
-.p-notification--attention .p-notification__icon::before {
-  content: "⚡";
-}
-
-.p-notification--attention .p-notification__status {
-  color: var(--note-attention-text, var(--attention-text-color));
 }
 
 .p-notification--security {
@@ -352,27 +336,6 @@ body:not([data-note-theme]) .p-notification {
 
 .p-notification--security .p-notification__status {
   color: var(--note-security-text, var(--security-text-color));
-}
-
-.p-notification--tip {
-  background: var(--note-tip-bg, var(--tip-bg-color));
-  border-left: 4px solid var(--note-tip-border, var(--tip-border-color));
-}
-
-.p-notification--tip .p-notification__response {
-  color: var(--note-tip-text, var(--tip-text-color));
-}
-
-.p-notification--tip .p-notification__icon {
-  background: var(--note-tip-border, var(--tip-border-color));
-}
-
-.p-notification--tip .p-notification__icon::before {
-  content: "�";
-}
-
-.p-notification--tip .p-notification__status {
-  color: var(--note-tip-text, var(--tip-text-color));
 }
 
 // Editor dropdown styles
@@ -437,28 +400,29 @@ body.dark-theme .note-types-dropdown,
 // Responsive design
 @media (max-width: 768px) {
   .p-notification {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   
   .p-notification__response {
-    padding: 0.75rem 0.75rem 0.75rem 3rem;
+    padding: 0.5rem 0.625rem 0.5rem 2.25rem;
+    font-size: 0.9rem;
   }
   
   .p-notification__icon {
-    left: 0.75rem;
-    top: 0.75rem;
-    width: 1.25rem;
-    height: 1.25rem;
-    font-size: 0.75rem;
+    left: 0.5rem;
+    top: 0.5rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 0.625rem;
   }
   
   .note-types-dropdown {
-    min-width: 180px;
+    min-width: 160px;
   }
   
   .note-type-button {
-    padding: 6px 12px;
-    font-size: 14px;
+    padding: 5px 10px;
+    font-size: 13px;
   }
 }
 

@@ -1,10 +1,11 @@
 {
   "name": "discourse-markdown-note",
-  "version": "1.0.2",
-  "description": "A BBCode Markdown extension for notes with full tag support, editor buttons, dark theme support and admin settings panel",
+  "version": "1.1.0",
+  "description": "A BBCode Markdown extension for notes with full tag support, dark theme support and customizable styling",
   "author": "DigneZzZ",
   "scripts": {
-    "lint": "prettier --write **/*.{es6,scss}"
+    "lint": "prettier --write **/*.{es6,scss}",
+    "lint:check": "prettier --check **/*.{es6,scss}"
   },
   "license": "MIT",
   "keywords": [
@@ -12,10 +13,9 @@
     "plugin",
     "markdown",
     "bbcode",
-    "notes",
-    "admin"
+    "notes"
   ],
   "devDependencies": {
-    "prettier": "1.18.2"
+    "prettier": "^3.4.2"
   }
 }
