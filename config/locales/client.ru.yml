@@ -8,7 +8,11 @@ ru:
           discourse_markdown_note: "Заметки Markdown"
   js:
     note:
-      composer_title: "Заметки"
+      # Editor button
+      composer_title: "Вставить заметку"
+      composer_placeholder: "Ваш текст здесь"
+      
+      # Note type titles
       note_title: "Заметка"
       info_title: "Информация"
       warn_title: "Предупреждение"

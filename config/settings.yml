@@ -1,4 +1,5 @@
 discourse_markdown_note:
+  # General settings
   discourse_markdown_note_enabled:
     default: true
     client: true
@@ -16,6 +17,8 @@ discourse_markdown_note:
   discourse_markdown_note_show_icons:
     default: true
     client: true
+
+  # Note type styles
   discourse_markdown_note_note_bg_light:
     default: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
     client: true
@@ -31,7 +34,8 @@ discourse_markdown_note:
   discourse_markdown_note_note_text_dark:
     default: '#b0b0b0'
     client: true
-  
+
+  # Info type styles
   discourse_markdown_note_info_bg_light:
     default: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)'
     client: true
@@ -47,7 +51,8 @@ discourse_markdown_note:
   discourse_markdown_note_info_text_dark:
     default: '#90caf9'
     client: true
-  
+
+  # Warning type styles
   discourse_markdown_note_warn_bg_light:
     default: 'linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%)'
     client: true
@@ -63,71 +68,59 @@ discourse_markdown_note:
   discourse_markdown_note_warn_text_dark:
     default: '#ffcc02'
     client: true
-  
-  discourse_markdown_note_negative_bg_light:
+
+  # Error type styles
+  discourse_markdown_note_error_bg_light:
     default: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)'
     client: true
-  discourse_markdown_note_negative_bg_dark:
+  discourse_markdown_note_error_bg_dark:
     default: 'linear-gradient(135deg, #331a1a 0%, #472424 100%)'
     client: true
-  discourse_markdown_note_negative_border:
+  discourse_markdown_note_error_border:
     default: '#f44336'
     client: true
-  discourse_markdown_note_negative_text_light:
+  discourse_markdown_note_error_text_light:
     default: '#c62828'
     client: true
-  discourse_markdown_note_negative_text_dark:
+  discourse_markdown_note_error_text_dark:
     default: '#ff8a80'
     client: true
-  
-  discourse_markdown_note_positive_bg_light:
+
+  # Success type styles
+  discourse_markdown_note_success_bg_light:
     default: 'linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%)'
     client: true
-  discourse_markdown_note_positive_bg_dark:
+  discourse_markdown_note_success_bg_dark:
     default: 'linear-gradient(135deg, #1a331a 0%, #244724 100%)'
     client: true
-  discourse_markdown_note_positive_border:
+  discourse_markdown_note_success_border:
     default: '#4caf50'
     client: true
-  discourse_markdown_note_positive_text_light:
+  discourse_markdown_note_success_text_light:
     default: '#2e7d32'
     client: true
-  discourse_markdown_note_positive_text_dark:
+  discourse_markdown_note_success_text_dark:
     default: '#a5d6a7'
     client: true
-  
-  discourse_markdown_note_caution_bg_light:
-    default: 'linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%)'
-    client: true
-  discourse_markdown_note_caution_bg_dark:
-    default: 'linear-gradient(135deg, #331a26 0%, #472433 100%)'
-    client: true
-  discourse_markdown_note_caution_border:
-    default: '#e91e63'
-    client: true
-  discourse_markdown_note_caution_text_light:
-    default: '#ad1457'
-    client: true
-  discourse_markdown_note_caution_text_dark:
-    default: '#f48fb1'
-    client: true
 
-  discourse_markdown_note_attention_bg_light:
+  # Important type styles
+  discourse_markdown_note_important_bg_light:
     default: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)'
     client: true
-  discourse_markdown_note_attention_bg_dark:
+  discourse_markdown_note_important_bg_dark:
     default: 'linear-gradient(135deg, #332a1a 0%, #473a24 100%)'
     client: true
-  discourse_markdown_note_attention_border:
+  discourse_markdown_note_important_border:
     default: '#ff5722'
     client: true
-  discourse_markdown_note_attention_text_light:
+  discourse_markdown_note_important_text_light:
     default: '#d84315'
     client: true
-  discourse_markdown_note_attention_text_dark:
+  discourse_markdown_note_important_text_dark:
     default: '#ffab91'
     client: true
-  
+
+  # Security type styles
   discourse_markdown_note_security_bg_light:
     default: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)'
     client: true
@@ -143,19 +136,20 @@ discourse_markdown_note:
   discourse_markdown_note_security_text_dark:
     default: '#ce93d8'
     client: true
-  
-  discourse_markdown_note_tip_bg_light:
-    default: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%)'
+
+  # Question type styles
+  discourse_markdown_note_question_bg_light:
+    default: 'linear-gradient(135deg, #e8f5ff 0%, #bbdefb 100%)'
     client: true
-  discourse_markdown_note_tip_bg_dark:
-    default: 'linear-gradient(135deg, #1a332e 0%, #24473f 100%)'
+  discourse_markdown_note_question_bg_dark:
+    default: 'linear-gradient(135deg, #1a2332 0%, #243447 100%)'
     client: true
-  discourse_markdown_note_tip_border:
-    default: '#009688'
+  discourse_markdown_note_question_border:
+    default: '#03a9f4'
     client: true
-  discourse_markdown_note_tip_text_light:
-    default: '#00695c'
+  discourse_markdown_note_question_text_light:
+    default: '#0277bd'
     client: true
-  discourse_markdown_note_tip_text_dark:
-    default: '#80cbc4'
+  discourse_markdown_note_question_text_dark:
+    default: '#81d4fa'
     client: true

@@ -8,7 +8,11 @@ en:
           discourse_markdown_note: "Markdown Notes"
   js:
     note:
-      composer_title: "Notes"
+      # Editor button
+      composer_title: "Insert Note"
+      composer_placeholder: "Your text here"
+      
+      # Note type titles
       note_title: "Note"
       info_title: "Information"
       warn_title: "Warning"
