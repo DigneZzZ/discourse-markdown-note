@@ -2,6 +2,9 @@
 
 Плагин для Discourse, добавляющий поддержку красиво оформленных заметок в стиле BBCode с полной поддержкой темной темы и гибкими настройками.
 
+<img width="285" height="368" alt="изображение" src="https://github.com/user-attachments/assets/48d613ab-dcdb-489d-90f8-510473fa9f61" />
+
+
 ## Возможности
 
 - ✅ 8 оптимизированных типов заметок: `note`, `info`, `warn`, `error`, `success`, `important`, `security`, `question`
