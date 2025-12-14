@@ -26,13 +26,16 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%)'
     client: true
   discourse_markdown_note_note_border:
-    default: '#6c757d'
+    default: '6c757d'
+    type: color
     client: true
   discourse_markdown_note_note_text_light:
-    default: '#495057'
+    default: '495057'
+    type: color
     client: true
   discourse_markdown_note_note_text_dark:
-    default: '#b0b0b0'
+    default: 'b0b0b0'
+    type: color
     client: true
 
   # Info type styles
@@ -43,13 +46,16 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #1a2332 0%, #243447 100%)'
     client: true
   discourse_markdown_note_info_border:
-    default: '#2196f3'
+    default: '2196f3'
+    type: color
     client: true
   discourse_markdown_note_info_text_light:
-    default: '#1565c0'
+    default: '1565c0'
+    type: color
     client: true
   discourse_markdown_note_info_text_dark:
-    default: '#90caf9'
+    default: '90caf9'
+    type: color
     client: true
 
   # Warning type styles
@@ -60,13 +66,16 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #332b1a 0%, #473a24 100%)'
     client: true
   discourse_markdown_note_warn_border:
-    default: '#ff9800'
+    default: 'ff9800'
+    type: color
     client: true
   discourse_markdown_note_warn_text_light:
-    default: '#e65100'
+    default: 'e65100'
+    type: color
     client: true
   discourse_markdown_note_warn_text_dark:
-    default: '#ffcc02'
+    default: 'ffcc02'
+    type: color
     client: true
 
   # Error type styles
@@ -77,13 +86,16 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #331a1a 0%, #472424 100%)'
     client: true
   discourse_markdown_note_error_border:
-    default: '#f44336'
+    default: 'f44336'
+    type: color
     client: true
   discourse_markdown_note_error_text_light:
-    default: '#c62828'
+    default: 'c62828'
+    type: color
     client: true
   discourse_markdown_note_error_text_dark:
-    default: '#ff8a80'
+    default: 'ff8a80'
+    type: color
     client: true
 
   # Success type styles
@@ -94,13 +106,16 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #1a331a 0%, #244724 100%)'
     client: true
   discourse_markdown_note_success_border:
-    default: '#4caf50'
+    default: '4caf50'
+    type: color
     client: true
   discourse_markdown_note_success_text_light:
-    default: '#2e7d32'
+    default: '2e7d32'
+    type: color
     client: true
   discourse_markdown_note_success_text_dark:
-    default: '#a5d6a7'
+    default: 'a5d6a7'
+    type: color
     client: true
 
   # Important type styles
@@ -111,13 +126,16 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #332a1a 0%, #473a24 100%)'
     client: true
   discourse_markdown_note_important_border:
-    default: '#ff5722'
+    default: 'ff5722'
+    type: color
     client: true
   discourse_markdown_note_important_text_light:
-    default: '#d84315'
+    default: 'd84315'
+    type: color
     client: true
   discourse_markdown_note_important_text_dark:
-    default: '#ffab91'
+    default: 'ffab91'
+    type: color
     client: true
 
   # Security type styles
@@ -128,13 +146,16 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #2a1a33 0%, #3a2447 100%)'
     client: true
   discourse_markdown_note_security_border:
-    default: '#9c27b0'
+    default: '9c27b0'
+    type: color
     client: true
   discourse_markdown_note_security_text_light:
-    default: '#7b1fa2'
+    default: '7b1fa2'
+    type: color
     client: true
   discourse_markdown_note_security_text_dark:
-    default: '#ce93d8'
+    default: 'ce93d8'
+    type: color
     client: true
 
   # Question type styles
@@ -145,11 +166,14 @@ discourse_markdown_note:
     default: 'linear-gradient(135deg, #1a2332 0%, #243447 100%)'
     client: true
   discourse_markdown_note_question_border:
-    default: '#03a9f4'
+    default: '03a9f4'
+    type: color
     client: true
   discourse_markdown_note_question_text_light:
-    default: '#0277bd'
+    default: '0277bd'
+    type: color
     client: true
   discourse_markdown_note_question_text_dark:
-    default: '#81d4fa'
+    default: '81d4fa'
+    type: color
     client: true
