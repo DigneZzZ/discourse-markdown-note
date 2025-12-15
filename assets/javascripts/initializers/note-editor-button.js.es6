@@ -115,10 +115,12 @@ function showNoteDropdown(toolbarEvent) {
 
 function insertNoteTag(toolbarEvent, noteType) {
   const selected = toolbarEvent.selected || "";
+  const openTag = `[${noteType}]\n`;
+  const closeTag = `\n[/${noteType}]`;
   
   if (selected) {
-    // Wrap selected text
-    toolbarEvent.addText(`[${noteType}]\n${selected}\n[/${noteType}]`);
+    // Wrap selected text using applySurround
+    toolbarEvent.applySurround(openTag, closeTag, 'note_surround', { multiline: false });
   } else {
     // Insert empty note with placeholder
     const placeholder = I18n.t("note.composer_placeholder", { defaultValue: "Your text here" });
