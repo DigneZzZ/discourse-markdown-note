@@ -1,6 +1,6 @@
 # name: discourse-markdown-note
 # about: A BBCode Markdown extension for notes with full tag support, dark theme support and customizable styling. Supports 8 note types: note, info, warn, error, success, important, security, question
-# version: 1.1.2
+# version: 1.1.3
 # authors: DigneZzZ
 # url: https://github.com/DigneZzZ/discourse-markdown-note
 
