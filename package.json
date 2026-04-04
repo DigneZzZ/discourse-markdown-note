@@ -1,6 +1,6 @@
 {
   "name": "discourse-markdown-note",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A BBCode Markdown extension for notes with full tag support, dark theme support and customizable styling",
   "author": "DigneZzZ",
   "scripts": {
